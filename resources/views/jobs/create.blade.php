@@ -2,6 +2,6 @@
 
 @section('content')
     <div class="container">
-        {{ $job->title }}
+        <h2>Create a Job</h2>
     </div>
 @endsection
