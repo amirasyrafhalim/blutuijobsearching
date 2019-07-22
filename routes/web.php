@@ -16,6 +16,9 @@ Route::get('/', function () {
 });
 
 
+Route::post('jobs', 'JobsController@store');
+Route::get('jobs/create', 'JobsController@create');
+Route::get('jobs/{job}/edit', 'JobsController@edit');
 Route::get('jobs/{job}/{slug}', 'JobsController@show');
 
 Auth::routes();
