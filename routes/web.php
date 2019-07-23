@@ -16,6 +16,8 @@ Route::get('/', function () {
 });
 
 
+Route::get('profile', 'ProfileController@show');
+
 Route::post('jobs', 'JobsController@store');
 Route::get('jobs/create', 'JobsController@create');
 Route::get('jobs/{job}/edit', 'JobsController@edit');
