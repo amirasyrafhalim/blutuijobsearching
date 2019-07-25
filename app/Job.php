@@ -20,5 +20,15 @@ class Job extends Model
     {
         return $this->id . '/' . Str::slug($this->title);
     }
+
+    /**
+     * A job is belongs to a user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
 

@@ -20,6 +20,18 @@ class JobsController extends Controller
     }
 
     /**
+     * Show all jobs.
+     *
+     * @return Factory|View
+     */
+    public function index()
+    {
+        $jobs = Job::all();
+
+        return view('jobs.index', compact('jobs'));
+    }
+
+    /**
      * Show create job page.
      *
      * @return Factory|View
@@ -38,11 +50,6 @@ class JobsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'category' => 'nullable',
-            'title' => 'required|min:'
-        ]);
-
         $request->validate([
             'title' => 'required|min:5|max:255',
             'description' => 'required|min:5',
@@ -89,5 +96,29 @@ class JobsController extends Controller
         }
 
         return view('jobs.edit', compact('job'));
+    }
+
+    /**
+     * Update the job.
+     *
+     * @param Job $job
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function update(Job $job, Request $request)
+    {
+        $request->validate([
+            'title' => 'required|min:5|max:255',
+            'description' => 'required|min:5',
+            'price' => 'required|numeric|min:1|max:99999',
+        ]);
+
+        $job->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'price' => $request->price * 100
+        ]);
+
+        return response("Job $job->title successfully updated", 201);
     }
 }
