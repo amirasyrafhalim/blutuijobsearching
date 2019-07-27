@@ -21,7 +21,7 @@ class JobTest extends TestCase
     }
 
     /** @test */
-    public function unauthorized_user_view_create_job_page()
+    public function unauthorized_user_cannot_view_create_job_page()
     {
         $this->withExceptionHandling()
             ->get('jobs/create')
@@ -79,5 +79,57 @@ class JobTest extends TestCase
                 'description' => 'Sleek and beautiful',
                 'price' => '300'])
             ->assertStatus(201);
+
+        $this->assertDatabaseHas('jobs', [
+            'title' => 'Create an agency website using blutui',
+            'description' => 'Sleek and beautiful',
+            'price' => '30000'
+        ]);
     }
+
+    /** @test */
+    public function can_update_created_job()
+    {
+        $jobCreator = factory('App\User')->create();
+        $job = factory('App\Job')->create([
+            'user_id' => $jobCreator->id,
+            'title' => 'Create an agency website using blutui',
+            'description' => 'Sleek and beautiful',
+            'price' => '300'
+        ]);
+
+        loginAs($jobCreator->id);
+
+        $this->withoutExceptionHandling()
+             ->JSON('PATCH', '/jobs/' . $job->id, [
+                 'title' => 'Updated title',
+                 'description' => 'Updated title',
+                 'price' => '500'
+             ])->assertStatus(201);
+
+        $this->assertDatabaseHas('jobs', [
+            'title' => 'Updated title',
+            'description' => 'Updated title',
+            'price' => '50000'
+        ]);
+    }
+
+    /** @test */
+    public function cannot_update_others_job()
+    {
+        $jobCreator = factory('App\User')->create();
+        $job = factory('App\Job')->create(['user_id' => $jobCreator->id]);
+
+        $randomUser = factory('App\User')->create();
+
+        loginAs($randomUser->id);
+
+        $this->withExceptionHandling()
+            ->patch('/jobs/' . $job->id, [
+                'title' => 'Updated title',
+                'description' => 'Updated title',
+                'price' => '500'
+            ])->assertStatus(403);
+    }
+
 }
