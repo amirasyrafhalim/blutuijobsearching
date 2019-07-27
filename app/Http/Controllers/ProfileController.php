@@ -12,4 +12,10 @@ class ProfileController extends Controller
 
         return view('profile.show', compact('names'));
     }
+
+    /** Edit user profile */
+    public function edit()
+    {
+        return view('profile.edit');
+    }
 }
