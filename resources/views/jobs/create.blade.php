@@ -39,6 +39,28 @@
                             </div>
 
                             <div class="form-group row">
+                                <label for="status" class="col-md-4 col-form-label text-md-right">Status</label>
+
+                                <div class="col-md-6">
+                                    <select name="status" id="status" class="form-control @error('status') is-invalid @enderror" required>
+                                        <option selected disabled>Please select one</option>
+                                        @foreach(\App\Job::STATUS_TYPE as $id => $type)
+                                            @if(old('status') == $id)
+                                                <option value="{{ $id }}" selected>{{ $type }}</option>
+                                            @else
+                                                <option value="{{ $id }}">{{ $type }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                    @error('status')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label for="price" class="col-md-4 col-form-label text-md-right">Price</label>
 
                                 <div class="col-md-6">
