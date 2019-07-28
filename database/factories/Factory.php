@@ -33,6 +33,7 @@ $factory->define(Job::class, function (Faker $faker) {
         'category' => Job::CATEGORY_DEFAULT,
         'title' => Str::limit($faker->text, 25),
         'description' => $faker->paragraph,
+        'status' => Job::STATUS_PUBLISHED,
         'price' => $faker->numberBetween(1, 1000)
     ];
 });

@@ -26,9 +26,9 @@ class JobsController extends Controller
     public function index(Request $request)
     {
         if($request->title != null) {
-            $jobs = Job::ByTitleContains($request->title)->get();
+            $jobs = Job::byTitleContains($request->title)->get();
         } else {
-            $jobs = Job::all();
+            $jobs = Job::published();
         }
 
         return view('jobs.index', compact('jobs'));
@@ -56,12 +56,14 @@ class JobsController extends Controller
             'title' => 'required|min:5|max:255',
             'description' => 'required|min:5',
             'price' => 'required|numeric|min:1|max:99999',
+            'status' =>'required|in:' . implode(',', Job::STATUSES),
         ]);
 
         $job = auth()->user()->jobs()->create([
             'title' => $request->title,
             'description' => $request->description,
-            'price' => $request->price * 100
+            'price' => $request->price * 100,
+            'status' => $request->status,
         ]);
 
         return $this->makeResponse("Job $job->title successfully created", "/jobs/" . $job->slug(), 201);
@@ -118,12 +120,14 @@ class JobsController extends Controller
             'title' => 'required|min:5|max:255',
             'description' => 'required|min:5',
             'price' => 'required|numeric|min:1|max:99999',
+            'status' =>'required|in:' . implode(',', Job::STATUSES),
         ]);
 
         $job->update([
             'title' => $request->title,
             'description' => $request->description,
-            'price' => $request->price * 100
+            'price' => $request->price * 100,
+            'status' => $request->status,
         ]);
 
         return $this->makeResponse("Job $job->title successfully updated", "/jobs/" . $job->slug(), 200);

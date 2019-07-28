@@ -4,7 +4,6 @@ namespace Tests\Unit;
 
 use App\Job;
 use Tests\TestCase;
-use Illuminate\Support\Str;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -70,11 +69,23 @@ class JobTest extends TestCase
     public function search_job_by_its_title()
     {
         factory('App\Job', 10)->create();
-        $job1 = factory('App\Job')->create(['title' => 'Web Design with Blutui']);
-        $job2 = factory('App\Job')->create(['title' => 'Logo Design with Blutui']);
+        factory('App\Job')->create(['title' => 'Web Design with Blutui']);
+        factory('App\Job')->create(['title' => 'Logo Design with Blutui']);
 
         $searchedJobs = Job::byTitleContains('Blutui')->get();
 
         $this->assertEquals(2, $searchedJobs->count());
+    }
+
+    /** @test */
+    public function query_published_job()
+    {
+        factory('App\Job', 10)->create(['status' => Job::STATUS_DRAFT]);
+        factory('App\Job')->create(['status' => Job::STATUS_PUBLISHED]);
+        factory('App\Job')->create(['status' => Job::STATUS_PUBLISHED]);
+
+        $publishedJobs = Job::published();
+
+        $this->assertEquals(2, $publishedJobs->count());
     }
 }

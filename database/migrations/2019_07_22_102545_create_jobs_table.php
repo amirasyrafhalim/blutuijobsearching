@@ -21,6 +21,7 @@ class CreateJobsTable extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->integer('price')->nullable();
+            $table->tinyInteger('status')->default(Job::STATUS_DRAFT);
             $table->timestamps();
             $table->softDeletes();
         });

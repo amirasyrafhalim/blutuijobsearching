@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Job;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -76,7 +77,9 @@ class JobTest extends TestCase
             ->post('/jobs', [
                 'title' => 'Create an agency website using blutui',
                 'description' => 'Sleek and beautiful',
-                'price' => '300'])
+                'price' => '300',
+                'status' => Job::STATUS_PUBLISHED
+            ])
             ->assertSee('jobs/1/create-an-agency-website-using-blutui');
 
         $this->assertDatabaseHas('jobs', [
@@ -93,15 +96,18 @@ class JobTest extends TestCase
 
         $this->withoutExceptionHandling()
              ->json('POST', '/jobs', [
-                'title' => 'Create an agency website using blutui',
-                'description' => 'Sleek and beautiful',
-                'price' => '300'])
+                 'title' => 'Create an agency website using blutui',
+                 'description' => 'Sleek and beautiful',
+                 'price' => '300',
+                 'status' => Job::STATUS_PUBLISHED,
+             ])
             ->assertStatus(201);
 
         $this->assertDatabaseHas('jobs', [
             'title' => 'Create an agency website using blutui',
             'description' => 'Sleek and beautiful',
-            'price' => '30000'
+            'price' => '30000',
+            'status' => Job::STATUS_PUBLISHED,
         ]);
     }
 
@@ -113,7 +119,7 @@ class JobTest extends TestCase
             'user_id' => $jobCreator->id,
             'title' => 'Create an agency website using blutui',
             'description' => 'Sleek and beautiful',
-            'price' => '300'
+            'price' => '300',
         ]);
 
         loginAs($jobCreator->id);
@@ -122,14 +128,16 @@ class JobTest extends TestCase
             ->patch('/jobs/' . $job->id, [
                 'title' => 'Updated title',
                 'description' => 'Updated title',
-                'price' => '500'
+                'price' => '500',
+                'status' => Job::STATUS_PUBLISHED,
             ])
             ->assertRedirect('jobs/1/updated-title');
 
         $this->assertDatabaseHas('jobs', [
             'title' => 'Updated title',
             'description' => 'Updated title',
-            'price' => '50000'
+            'price' => '50000',
+            'status' => Job::STATUS_PUBLISHED,
         ]);
     }
 
@@ -150,13 +158,15 @@ class JobTest extends TestCase
              ->json('PATCH', '/jobs/' . $job->id, [
                  'title' => 'Updated title',
                  'description' => 'Updated title',
-                 'price' => '500'
+                 'price' => '500',
+                 'status' => Job::STATUS_PUBLISHED,
              ])->assertStatus(200);
 
         $this->assertDatabaseHas('jobs', [
             'title' => 'Updated title',
             'description' => 'Updated title',
-            'price' => '50000'
+            'price' => '50000',
+            'status' => Job::STATUS_PUBLISHED,
         ]);
     }
 
