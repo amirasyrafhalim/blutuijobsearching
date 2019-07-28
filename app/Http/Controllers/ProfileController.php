@@ -8,8 +8,8 @@ class ProfileController extends Controller
 {
     public function show()
     {
-        $names = ['John', 'Munee', 'Noelle', 'Dhiya'];
+        //$profile = Profile::all();
 
-        return view('profile.show', compact('names'));
+        return view('profile.show', compact('profile'));
     }
 }
