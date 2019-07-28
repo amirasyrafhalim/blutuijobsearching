@@ -252,4 +252,16 @@ class JobTest extends TestCase
                 'price' => '500'
             ])->assertStatus(403);
     }
+
+    /** @test */
+    public function can_search_for_jobs()
+    {
+        factory('App\Job', 10)->create();
+        $job1 = factory('App\Job')->create(['title' => 'Web Design with Blutui']);
+        $job2 = factory('App\Job')->create(['title' => 'Logo Design with Blutui']);
+
+        $this->get('/jobs/?title=Blutui')
+             ->assertSee($job1->title)
+             ->assertSee($job2->title);
+    }
 }

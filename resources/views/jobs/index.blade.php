@@ -4,22 +4,40 @@
     <div class="container">
         <h1>Jobs</h1>
         <div class="row">
-            @foreach($jobs as $job)
-                <div class="col-md-6">
-                    <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                        <div class="col p-4 d-flex flex-column position-static">
-                            {{--<strong class="d-inline-block mb-2 text-primary">World</strong>--}}
-                            <h3 class="mb-0"><a href="/jobs/{{ $job->slug() }}">{{ $job->title }}</a></h3>
-                            <div class="mb-1 text-muted">{{ $job->created_at->diffForHumans() }} by {{ $job->author->name }}</div>
-                            <p class="card-text mb-auto">{{ $job->description }}</p>
-                            <h3>${{ $job->price }}</h3>
-                        </div>
-                        <div class="col-auto d-none d-lg-block">
-                            <svg class="bd-placeholder-img" width="200" height="400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-                        </div>
+            <div class="col-md-4">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-header">
+                        Filter results
+                    </div>
+                    <div class="card-body">
+                        <form class="input-group mb-3" method="GET" action="/jobs">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default">Search</span>
+                            </div>
+                            <input type="text" name="title" class="form-control" value="{{ Request::input('title') }}">
+                        </form>
                     </div>
                 </div>
-            @endforeach
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    @forelse($jobs as $job)
+                        <div class="col-md-6 mb-3">
+                            <div class="card" style="width: 18rem;">
+                                <img src="https://placehold.co/600x400" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title"><a href="/jobs/{{ $job->slug() }}">{{ $job->title }}</a></h5>
+                                    <h6 class="card-title">{{ $job->created_at->diffForHumans() }} by {{ $job->author->name }} - {{ $job->price ? '$' . $job->price : '' }}</h6>
+                                    <p class="card-text">{{ $job->excerpt() }}</p>
+                                    <a href="/jobs/{{ $job->slug() }}" class="btn btn-primary">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <p>No job found</p>
+                    @endforelse
+                </div>
+            </div>
         </div>
     </div>
 @endsection

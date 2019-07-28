@@ -67,5 +67,27 @@ class Job extends Model
     {
         return $this->user_id == $user->id;
     }
+
+    /**
+     * Return description excerpt.
+     *
+     * @return string
+     */
+    public function excerpt()
+    {
+        return Str::words($this->description,10);
+    }
+
+    /**
+     * Query scope find job by title.
+     *
+     * @param $query
+     * @param $title
+     * @return mixed
+     */
+    public static function scopeByTitleContains($query, $title)
+    {
+        return $query->where('title', 'LIKE', '%' . $title . '%');
+    }
 }
 

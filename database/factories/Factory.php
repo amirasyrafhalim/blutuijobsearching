@@ -31,7 +31,7 @@ $factory->define(Job::class, function (Faker $faker) {
     return [
         'user_id' => function() { return factory(App\User::class)->create()->id; },
         'category' => Job::CATEGORY_DEFAULT,
-        'title' => $faker->text,
+        'title' => Str::limit($faker->text, 25),
         'description' => $faker->paragraph,
         'price' => $faker->numberBetween(1, 1000)
     ];

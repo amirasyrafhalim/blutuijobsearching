@@ -26,10 +26,10 @@ class JobsController extends Controller
     public function index(Request $request)
     {
         if($request->title != null) {
-            dd($request->all());
+            $jobs = Job::ByTitleContains($request->title)->get();
+        } else {
+            $jobs = Job::all();
         }
-
-        $jobs = Job::all();
 
         return view('jobs.index', compact('jobs'));
     }

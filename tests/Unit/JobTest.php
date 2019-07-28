@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Job;
 use Tests\TestCase;
 use Illuminate\Support\Str;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -55,5 +56,25 @@ class JobTest extends TestCase
         $job = factory('App\Job')->create();
 
         $this->assertFalse($job->isOwner());
+    }
+
+    /** @test */
+    public function job_has_excerpt_less_character_than_its_description()
+    {
+        $job = factory('App\Job')->create();
+
+        $this->assertLessThan(strlen($job->description), strlen($job->excerpt()));
+    }
+
+    /** @test */
+    public function search_job_by_its_title()
+    {
+        factory('App\Job', 10)->create();
+        $job1 = factory('App\Job')->create(['title' => 'Web Design with Blutui']);
+        $job2 = factory('App\Job')->create(['title' => 'Logo Design with Blutui']);
+
+        $searchedJobs = Job::byTitleContains('Blutui')->get();
+
+        $this->assertEquals(2, $searchedJobs->count());
     }
 }
