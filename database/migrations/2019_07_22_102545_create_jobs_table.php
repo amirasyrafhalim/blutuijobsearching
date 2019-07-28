@@ -22,6 +22,7 @@ class CreateJobsTable extends Migration
             $table->text('description')->nullable();
             $table->integer('price')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

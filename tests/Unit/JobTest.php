@@ -14,8 +14,16 @@ class JobTest extends TestCase
     /** @test */
     public function a_job_has_its_slug()
     {
-        $job = factory('App\Job')->create();
+        $job = factory('App\Job')->create(['title' => 'Blutui Marketplace']);
 
-        $this->assertEquals($job->id . '/' . Str::slug($job->title), $job->slug());
+        $this->assertEquals('1/blutui-marketplace', $job->slug());
+    }
+
+    /** @test */
+    public function can_get_currency_friendly_format()
+    {
+        $job = factory('App\Job')->create(['price' => '10000']);
+
+        $this->assertEquals('100.00', $job->priceInCurrency());
     }
 }

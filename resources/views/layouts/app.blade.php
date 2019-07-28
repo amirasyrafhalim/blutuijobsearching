@@ -73,6 +73,14 @@
         </nav>
 
         <main class="py-4">
+            <div class="container">
+                @if(Session::has('message'))
+                    <div class="alert alert-primary" role="alert">
+                        {!! session('message') !!}
+                    </div>
+                @endif
+            </div>
+
             @yield('content')
         </main>
     </div>

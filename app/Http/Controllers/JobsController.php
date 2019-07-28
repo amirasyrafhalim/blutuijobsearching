@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Job;
-use Illuminate\View\View;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Contracts\View\Factory;
 
 class JobsController extends Controller
 {
@@ -16,16 +14,21 @@ class JobsController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->except('show');
+        $this->middleware('auth')->except('show', 'index');
     }
 
     /**
      * Show all jobs.
      *
-     * @return Factory|View
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
+        if($request->title != null) {
+            dd($request->all());
+        }
+
         $jobs = Job::all();
 
         return view('jobs.index', compact('jobs'));
@@ -34,7 +37,7 @@ class JobsController extends Controller
     /**
      * Show create job page.
      *
-     * @return Factory|View
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -42,11 +45,10 @@ class JobsController extends Controller
     }
 
     /**
-     * Store job to database
+     * Store data to database.
      *
      * @param Request $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
-     * @throws \Illuminate\Validation\ValidationException
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      */
     public function store(Request $request)
     {
@@ -62,15 +64,15 @@ class JobsController extends Controller
             'price' => $request->price * 100
         ]);
 
-        return response("Job $job->title successfully created", 201);
+        return $this->makeResponse("Job $job->title successfully created", "/jobs/" . $job->slug(), 201);
     }
 
     /**
-     * Show job page.
+     * Show single job page.
      *
      * @param Job $job
      * @param $slug
-     * @return Factory|View
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show(Job $job, $slug)
     {
@@ -86,7 +88,7 @@ class JobsController extends Controller
      * Show job edit page.
      *
      * @param Job $job
-     * @return Factory|View
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(Job $job)
     {
@@ -124,10 +126,6 @@ class JobsController extends Controller
             'price' => $request->price * 100
         ]);
 
-        if($request->expectsJson()) {
-            return response("Job $job->title successfully updated", 201);
-        } else {
-            return redirect('/jobs');
-        }
+        return $this->makeResponse("Job $job->title successfully updated", "/jobs/" . $job->slug(), 200);
     }
 }

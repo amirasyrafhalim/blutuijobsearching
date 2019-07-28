@@ -74,7 +74,26 @@ class JobTest extends TestCase
         login();
 
         $this->withoutExceptionHandling()
-             ->post('/jobs', [
+            ->post('/jobs', [
+                'title' => 'Create an agency website using blutui',
+                'description' => 'Sleek and beautiful',
+                'price' => '300'])
+            ->assertSee('jobs/1/create-an-agency-website-using-blutui');
+
+        $this->assertDatabaseHas('jobs', [
+            'title' => 'Create an agency website using blutui',
+            'description' => 'Sleek and beautiful',
+            'price' => '30000'
+        ]);
+    }
+
+    /** @test */
+    public function store_job_to_database_using_ajax()
+    {
+        login();
+
+        $this->withoutExceptionHandling()
+             ->json('POST', '/jobs', [
                 'title' => 'Create an agency website using blutui',
                 'description' => 'Sleek and beautiful',
                 'price' => '300'])
@@ -101,11 +120,39 @@ class JobTest extends TestCase
         loginAs($jobCreator->id);
 
         $this->withoutExceptionHandling()
-             ->JSON('PATCH', '/jobs/' . $job->id, [
+            ->patch('/jobs/' . $job->id, [
+                'title' => 'Updated title',
+                'description' => 'Updated title',
+                'price' => '500'
+            ])
+            ->assertRedirect('jobs/1/updated-title');
+
+        $this->assertDatabaseHas('jobs', [
+            'title' => 'Updated title',
+            'description' => 'Updated title',
+            'price' => '50000'
+        ]);
+    }
+
+    /** @test */
+    public function can_update_created_job_using_ajax()
+    {
+        $jobCreator = factory('App\User')->create();
+        $job = factory('App\Job')->create([
+            'user_id' => $jobCreator->id,
+            'title' => 'Create an agency website using blutui',
+            'description' => 'Sleek and beautiful',
+            'price' => '300'
+        ]);
+
+        loginAs($jobCreator->id);
+
+        $this->withoutExceptionHandling()
+             ->json('PATCH', '/jobs/' . $job->id, [
                  'title' => 'Updated title',
                  'description' => 'Updated title',
                  'price' => '500'
-             ])->assertStatus(201);
+             ])->assertStatus(200);
 
         $this->assertDatabaseHas('jobs', [
             'title' => 'Updated title',
@@ -132,4 +179,11 @@ class JobTest extends TestCase
             ])->assertStatus(403);
     }
 
+    /** @test */
+    public function guest_can_view_jobs_page()
+    {
+        $this->withExceptionHandling()
+             ->get('/jobs/')
+             ->assertStatus(200);
+    }
 }
