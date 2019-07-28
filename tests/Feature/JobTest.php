@@ -34,10 +34,9 @@ class JobTest extends TestCase
     {
         $job = factory('App\Job')->create();
 
-        $this->withExceptionHandling()
+        $this->withoutExceptionHandling()
              ->get('/jobs/' . $job->slug())
-             ->assertSee($job->title)
-             ->assertStatus(200);
+             ->assertSee($job->title);
     }
 
     /** @test */
@@ -185,5 +184,72 @@ class JobTest extends TestCase
         $this->withExceptionHandling()
              ->get('/jobs/')
              ->assertStatus(200);
+    }
+
+    /** @test */
+    public function can_delete_created_job()
+    {
+        $jobCreator = factory('App\User')->create();
+        $job = factory('App\Job')->create([
+            'user_id' => $jobCreator->id,
+            'title' => 'Create an agency website using blutui',
+            'description' => 'Sleek and beautiful',
+            'price' => '300'
+        ]);
+
+        loginAs($jobCreator->id);
+
+        $this->withExceptionHandling()
+             ->delete('/jobs/' . $job->id)
+             ->assertRedirect('jobs/');
+
+        $this->assertSoftDeleted('jobs', [
+            'user_id' => $jobCreator->id,
+            'title' => 'Create an agency website using blutui',
+            'description' => 'Sleek and beautiful',
+            'price' => '300'
+        ]);
+    }
+
+    /** @test */
+    public function can_delete_created_job_using_ajax()
+    {
+        $jobCreator = factory('App\User')->create();
+        $job = factory('App\Job')->create([
+            'user_id' => $jobCreator->id,
+            'title' => 'Create an agency website using blutui',
+            'description' => 'Sleek and beautiful',
+            'price' => '300'
+        ]);
+
+        loginAs($jobCreator->id);
+
+        $this->withExceptionHandling()
+            ->json('DELETE', '/jobs/' . $job->id)->assertStatus(200);
+
+        $this->assertSoftDeleted('jobs', [
+            'user_id' => $jobCreator->id,
+            'title' => 'Create an agency website using blutui',
+            'description' => 'Sleek and beautiful',
+            'price' => '300'
+        ]);
+    }
+
+    /** @test */
+    public function cannot_delete_others_job()
+    {
+        $jobCreator = factory('App\User')->create();
+        $job = factory('App\Job')->create(['user_id' => $jobCreator->id]);
+
+        $randomUser = factory('App\User')->create();
+
+        loginAs($randomUser->id);
+
+        $this->withExceptionHandling()
+             ->delete('/jobs/' . $job->id, [
+                'title' => 'Updated title',
+                'description' => 'Updated title',
+                'price' => '500'
+            ])->assertStatus(403);
     }
 }

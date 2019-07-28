@@ -128,4 +128,23 @@ class JobsController extends Controller
 
         return $this->makeResponse("Job $job->title successfully updated", "/jobs/" . $job->slug(), 200);
     }
+
+    /**
+     * Soft delete the job.
+     *
+     * @param Job $job
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
+     * @throws \Exception
+     */
+    public function destroy(Job $job)
+    {
+        // Todo: Separate this logic to dedicated policy class.
+        if($job->user_id != Auth::user()->id) {
+            abort(403);
+        }
+
+        $job->delete();
+
+        return $this->makeResponse("Job $job->title successfully deleted", "/jobs/", 200);
+    }
 }

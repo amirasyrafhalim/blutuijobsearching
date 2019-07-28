@@ -26,4 +26,34 @@ class JobTest extends TestCase
 
         $this->assertEquals('100.00', $job->priceInCurrency());
     }
+
+    /** @test */
+    public function return_true_if_authenticated_user_is_job_owner()
+    {
+        $user = factory('App\User')->create();
+        $job = factory('App\Job')->create(['user_id' => $user->id]);
+
+        loginAs($user->id);
+
+        $this->assertTrue($job->isOwner());
+    }
+
+    /** @test */
+    public function return_true_if_user_is_jobs_owner()
+    {
+        $user = factory('App\User')->create();
+        $job = factory('App\Job')->create(['user_id' => $user->id]);
+
+        loginAs($user->id);
+
+        $this->assertTrue($job->isOwnedBy($user));
+    }
+
+    /** @test */
+    public function return_false_if_user_is_guest()
+    {
+        $job = factory('App\Job')->create();
+
+        $this->assertFalse($job->isOwner());
+    }
 }

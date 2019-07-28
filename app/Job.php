@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -42,6 +43,29 @@ class Job extends Model
     public function priceInCurrency()
     {
         return number_format($this->price / 100, 2);
+    }
+
+    /**
+     * Return true if authenticated user is job owner.
+     *
+     * @return bool
+     */
+    public function isOwner()
+    {
+        if(Auth::guest()) return false;
+
+        return $this->isOwnedBy(Auth::user());
+    }
+
+    /**
+     * Return true if user is job owner.
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function isOwnedBy(User $user)
+    {
+        return $this->user_id == $user->id;
     }
 }
 
