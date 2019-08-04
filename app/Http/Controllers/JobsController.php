@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Job;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class JobsController extends Controller
 {
@@ -22,9 +21,12 @@ class JobsController extends Controller
      *
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Job::class);
+
         if($request->title != null) {
             $jobs = Job::byTitleContains($request->title)->get();
         } else {
@@ -38,20 +40,25 @@ class JobsController extends Controller
      * Show create job page.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create()
     {
+        $this->authorize('create', Job::class);
+
         return view('jobs.create');
     }
 
     /**
-     * Store data to database.
+     * Store job to database.
      *
      * @param Request $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Job::class);
         $request->validate([
             'title' => 'required|min:5|max:255',
             'description' => 'required|min:5',
@@ -75,9 +82,12 @@ class JobsController extends Controller
      * @param Job $job
      * @param $slug
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(Job $job, $slug)
     {
+        $this->authorize('create', $job);
+
         if($slug != Str::slug($job->title))
         {
             abort(404);
@@ -87,17 +97,15 @@ class JobsController extends Controller
     }
 
     /**
-     * Show job edit page.
+     * Show edit job page.
      *
      * @param Job $job
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Job $job)
     {
-        // Todo: Separate this logic to dedicated policy class.
-        if($job->user_id != Auth::user()->id) {
-            abort(403);
-        }
+        $this->authorize('update', $job);
 
         return view('jobs.edit', compact('job'));
     }
@@ -107,14 +115,12 @@ class JobsController extends Controller
      *
      * @param Job $job
      * @param Request $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Job $job, Request $request)
     {
-        // Todo: Separate this logic to dedicated policy class.
-        if($job->user_id != Auth::user()->id) {
-            abort(403);
-        }
+        $this->authorize('update', $job);
 
         $request->validate([
             'title' => 'required|min:5|max:255',
@@ -134,18 +140,15 @@ class JobsController extends Controller
     }
 
     /**
-     * Soft delete the job.
+     * Delete job.
      *
      * @param Job $job
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
-     * @throws \Exception
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Job $job)
     {
-        // Todo: Separate this logic to dedicated policy class.
-        if($job->user_id != Auth::user()->id) {
-            abort(403);
-        }
+        $this->authorize('delete', $job);
 
         $job->delete();
 
