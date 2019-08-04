@@ -15,11 +15,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-Route::post('jobs', 'JobsController@store');
+Route::get('jobs', 'JobsController@index');
 Route::get('jobs/create', 'JobsController@create');
 Route::get('jobs/{job}/edit', 'JobsController@edit');
 Route::get('jobs/{job}/{slug}', 'JobsController@show');
+Route::post('jobs', 'JobsController@store');
+Route::patch('jobs/{job}', 'JobsController@update');
+Route::delete('jobs/{job}', 'JobsController@destroy');
 
 Auth::routes();
 
