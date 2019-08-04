@@ -45,6 +45,16 @@ class Job extends Model
     }
 
     /**
+     * Get job slug with prefix.
+     * Todo: Unit Test.
+     * @return string
+     */
+    public function slugWithPrefix()
+    {
+        return 'jobs/' . $this->id . '/' . Str::slug($this->title);
+    }
+
+    /**
      * A job is belongs to a user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -52,6 +62,16 @@ class Job extends Model
     public function author()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * A job has many applicants.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function applicants()
+    {
+        return $this->belongsToMany(User::class, 'job_user')->withTimestamps();
     }
 
     /**

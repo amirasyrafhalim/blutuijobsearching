@@ -46,4 +46,25 @@ class User extends Authenticatable
     {
         return $this->hasMany(Job::class);
     }
+
+    /**
+     * A user may apply for many jobs.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function appliedJobs()
+    {
+        return $this->belongsToMany(Job::class, 'job_user', 'user_id', 'job_id')->withTimestamps();
+    }
+
+    /**
+     * Check if user has applied for the job.
+     * Todo: Test
+     * @param Job $job
+     * @return bool
+     */
+    public function hasAppliedJob(Job $job)
+    {
+        return $this->appliedJobs()->where('job_id', $job->id)->exists();
+    }
 }
