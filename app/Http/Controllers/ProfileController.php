@@ -21,8 +21,21 @@ class ProfileController extends Controller
     }
 
     /** Edit user profile */
-    public function update(Request $request)
+    public function update(Profile $profile, Request $request)
     {
+        $this->authorize('update', $profile);
+
+        $request->validate([
+            'name' => 'required',
+            'phoneNum' => 'required',
+            'country' => 'required',
+            'description' => 'required',
+            'language' => 'required',
+            'skills' => 'required',
+            'education' => 'required',
+            'cert' => 'required',
+        ]);
+
         Auth::user()->update([
             'name' => $request->name,
             'phoneNum' => $request->phoneNum,
@@ -33,5 +46,7 @@ class ProfileController extends Controller
             'education' => $request->education,
             'cert' => $request->nacertme,
         ]);
+
+        return $this->makeResponse("Profile $profile->name successfully updated", "/profile/" . $profile->slug(), 200);
     }
 }

@@ -9,7 +9,7 @@
 
                     <div class="card-body">
                         <form method="POST" action="/jobs/{{ $job->id }}">
-                            @csrf {{ method_field("PATCH") }}N
+                            @csrf {{ method_field("PATCH") }}
 
                             <div class="form-group row">
                                 <label for="title" class="col-md-4 col-form-label text-md-right">Title</label>
