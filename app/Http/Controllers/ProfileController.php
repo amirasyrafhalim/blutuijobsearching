@@ -7,12 +7,11 @@ use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
-    /**show user profile */
     public function show()
     {
-        $profile = Profile::all();
+        $user = Auth::user();
 
-        return view('profile.show', compact('profile'));
+        return view('profile.show', compact('user'));
     }
 
     /** Edit user profile */
@@ -21,11 +20,18 @@ class ProfileController extends Controller
         return view('profile.edit');
     }
 
+    /** Edit user profile */
     public function update(Request $request)
     {
         Auth::user()->update([
-            'name' => $request->name
-            //'skills' => $request->skills
+            'name' => $request->name,
+            'phoneNum' => $request->phoneNum,
+            'country' => $request->country,
+            'description' => $request->description,
+            'language' => $request->language,
+            'skills' => $request->skills,
+            'education' => $request->education,
+            'cert' => $request->nacertme,
         ]);
     }
 }
