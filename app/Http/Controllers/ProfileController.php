@@ -9,6 +9,11 @@ class ProfileController extends Controller
 {
     public function show()
     {
+        if (Auth::guest())
+        {
+            return redirect('/login');
+        }
+
         $user = Auth::user();
 
         return view('profile.show', compact('user'));
@@ -21,10 +26,8 @@ class ProfileController extends Controller
     }
 
     /** Edit user profile */
-    public function update(Profile $profile, Request $request)
+    public function update(Request $request)
     {
-        $this->authorize('update', $profile);
-
         $request->validate([
             'name' => 'required',
             'phoneNum' => 'required',

@@ -6,7 +6,7 @@
         <div class="media border p-3">
             <img src="" alt="Muneerah" class="img-thumbnail" width="100" height="100">
             <div class="media-body">
-                <h4>{{ $profile->name }}</h4>
+                <h4>{{ $user->name }}</h4>
                 <ul>
                     <li>
                         gvhdsjbdjkfdfkm
