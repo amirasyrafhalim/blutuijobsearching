@@ -16,7 +16,7 @@
                     </li>
                 </ul>
                 <div class="col text-right"></div>
-                <a href="edit" class="btn btn-info" role="button">Edit Profile</a>
+                <a href="/profile/edit" class="btn btn-info" role="button">Edit Profile</a>
             </div>
         </div>
         <br>
