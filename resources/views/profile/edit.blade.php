@@ -32,7 +32,7 @@
                                     <label for="country" class="col-md-4 col-form-label text-md-right">Country</label>
 
                                     <div class="col-md-6">
-                                        <select id="country" name="country" value="{{ $user->country }}" class="form-control">
+                                        <select id="country" name="country" class="form-control">
                                             <option value="Afghanistan">Afghanistan</option>
                                             <option value="Åland Islands">Åland Islands</option>
                                             <option value="Albania">Albania</option>
@@ -286,7 +286,7 @@
                                     <label for="description" class="col-md-4 col-form-label text-md-right">Description</label>
 
                                     <div class="col-md-6">
-                                        <textarea id="description" name="description" type="text" value="{{ $user->description }}" class="form-control"></textarea>
+                                        <textarea id="description" name="description" type="text" class="form-control">{{ $user->description }}</textarea>
                                     </div>
                                 </div>
 
@@ -304,7 +304,7 @@
                                     <label for="skills" class="col-md-4 col-form-label text-md-right">Skills</label>
 
                                     <div class="col-md-6">
-                                        <textarea id="skills" name="skills" type="text" value="{{ $user->skills }}" class="form-control"></textarea>
+                                        <textarea id="skills" name="skills" type="text" class="form-control">{{ $user->skills }}</textarea>
                                     </div>
                                 </div>
 
@@ -313,7 +313,7 @@
                                     <label for="education" class="col-md-4 col-form-label text-md-right">Education</label>
 
                                     <div class="col-md-6">
-                                        <textarea id="education" name="education" type="text" value="{{ $user->education }}" class="form-control"></textarea>
+                                        <textarea id="education" name="education" type="text" class="form-control">{{ $user->education }}</textarea>
                                     </div>
                                 </div>
 
@@ -322,7 +322,7 @@
                                     <label for="cert" class="col-md-4 col-form-label text-md-right">Certificate</label>
 
                                     <div class="col-md-6">
-                                        <textarea id="cert" name="cert" type="text" value="{{ $user->cert }}" class="form-control"></textarea>
+                                        <textarea id="cert" name="cert" type="text" class="form-control">{{ $user->cert }}</textarea>
                                     </div>
                                 </div>
 
