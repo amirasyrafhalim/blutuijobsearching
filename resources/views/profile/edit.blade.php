@@ -14,7 +14,7 @@
                                     <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
 
                                     <div class="col-md-6">
-                                        <input id="name" name="name" type="text" value="{{ $profile->name }}" class="form-control">
+                                        <input id="name" name="name" type="text" value="{{ $user->name }}" class="form-control">
                                     </div>
                                 </div>
 
@@ -23,7 +23,7 @@
                                     <label for="phoneNum" class="col-md-4 col-form-label text-md-right">Phone Number</label>
 
                                     <div class="col-md-6">
-                                        <input id="phoneNum" name="phoneNum" type="text" value="{{ $profile->phoneNum }}" class="form-control">
+                                        <input id="phoneNum" name="phoneNum" type="text" value="{{ $user->phoneNum }}" class="form-control">
                                     </div>
                                 </div>
 
@@ -32,7 +32,7 @@
                                     <label for="country" class="col-md-4 col-form-label text-md-right">Country</label>
 
                                     <div class="col-md-6">
-                                        <select id="country" name="country" value="{{ $profile->country }}" class="form-control">
+                                        <select id="country" name="country" value="{{ $user->country }}" class="form-control">
                                             <option value="Afghanistan">Afghanistan</option>
                                             <option value="Åland Islands">Åland Islands</option>
                                             <option value="Albania">Albania</option>
@@ -286,7 +286,7 @@
                                     <label for="description" class="col-md-4 col-form-label text-md-right">Description</label>
 
                                     <div class="col-md-6">
-                                        <textarea id="description" name="description" type="text" value="{{ $profile->description }}" class="form-control"></textarea>
+                                        <textarea id="description" name="description" type="text" value="{{ $user->description }}" class="form-control"></textarea>
                                     </div>
                                 </div>
 
@@ -295,7 +295,7 @@
                                     <label for="language" class="col-md-4 col-form-label text-md-right">Language</label>
 
                                     <div class="col-md-6">
-                                        <input id="language" name="language" type="text" value="{{ $profile->language }}" class="form-control">
+                                        <input id="language" name="language" type="text" value="{{ $user->language }}" class="form-control">
                                     </div>
                                 </div>
 
@@ -304,7 +304,7 @@
                                     <label for="skills" class="col-md-4 col-form-label text-md-right">Skills</label>
 
                                     <div class="col-md-6">
-                                        <textarea id="skills" name="skills" type="text" value="{{ $profile->skills }}" class="form-control"></textarea>
+                                        <textarea id="skills" name="skills" type="text" value="{{ $user->skills }}" class="form-control"></textarea>
                                     </div>
                                 </div>
 
@@ -313,7 +313,7 @@
                                     <label for="education" class="col-md-4 col-form-label text-md-right">Education</label>
 
                                     <div class="col-md-6">
-                                        <textarea id="education" name="education" type="text" value="{{ $profile->education }}" class="form-control"></textarea>
+                                        <textarea id="education" name="education" type="text" value="{{ $user->education }}" class="form-control"></textarea>
                                     </div>
                                 </div>
 
@@ -322,7 +322,7 @@
                                     <label for="cert" class="col-md-4 col-form-label text-md-right">Certificate</label>
 
                                     <div class="col-md-6">
-                                        <textarea id="cert" name="certificate" type="text" value="{{ $profile->cert }}" class="form-control"></textarea>
+                                        <textarea id="cert" name="certificate" type="text" value="{{ $user->cert }}" class="form-control"></textarea>
                                     </div>
                                 </div>
 

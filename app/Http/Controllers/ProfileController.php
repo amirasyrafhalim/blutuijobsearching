@@ -22,7 +22,13 @@ class ProfileController extends Controller
     /** Edit user profile */
     public function edit()
     {
-        return view('profile.edit');
+        if (Auth::guest())
+        {
+            return redirect('/login');
+        }
+
+        $user = Auth::user();
+        return view('profile.edit', compact('user'));
     }
 
     /** Edit user profile */
@@ -39,7 +45,7 @@ class ProfileController extends Controller
             'cert' => 'required',
         ]);
 
-        Auth::user()->update([
+        $user = Auth::user()->update([
             'name' => $request->name,
             'phoneNum' => $request->phoneNum,
             'country' => $request->country,
@@ -50,6 +56,6 @@ class ProfileController extends Controller
             'cert' => $request->nacertme,
         ]);
 
-        return $this->makeResponse("Profile $profile->name successfully updated", "/profile/" . $profile->slug(), 200);
+        return $this->makeResponse("Profile successfully updated", "/profile/", 200);
     }
 }

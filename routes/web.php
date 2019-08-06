@@ -16,8 +16,8 @@ Route::get('/', function () {
 });
 
 Route::get('profile', 'ProfileController@show');
-Route::get('profile/{profile}/edit', 'ProfileController@edit');
-Route::patch('profile/{profile}', 'ProfileController@update');
+Route::get('profile/edit', 'ProfileController@edit');
+Route::patch('profile', 'ProfileController@update');
 
 Route::post('jobs', 'JobsController@store');
 Route::get('jobs', 'JobsController@index');
