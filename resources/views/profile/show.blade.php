@@ -5,9 +5,9 @@
     <div class="container">
         <h1>Freelancer Profile</h1>
         <div class="media border p-3">
-            <img src="" alt="Muneerah" class="img-thumbnail" width="100" height="100">
+            <img src="https://via.placeholder.com/150" alt="Muneerah" class="img-thumbnail">
             <div class="media-body">
-                <h4>Hi, I am {{ $user->name }}</h4>
+                <h4>{{ $user->name }}</h4>
                 <ul>
                     <li>
                         From: {{$user->country}}
