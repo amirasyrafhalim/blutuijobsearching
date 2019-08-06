@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-        <h1>Edit Profile</h1>
         <div class="container">
+            <h1>Edit Profile</h1>
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
@@ -322,7 +322,7 @@
                                     <label for="cert" class="col-md-4 col-form-label text-md-right">Certificate</label>
 
                                     <div class="col-md-6">
-                                        <textarea id="cert" name="certificate" type="text" value="{{ $user->cert }}" class="form-control"></textarea>
+                                        <textarea id="cert" name="cert" type="text" value="{{ $user->cert }}" class="form-control"></textarea>
                                     </div>
                                 </div>
 

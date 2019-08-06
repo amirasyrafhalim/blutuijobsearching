@@ -53,7 +53,7 @@ class ProfileController extends Controller
             'language' => $request->language,
             'skills' => $request->skills,
             'education' => $request->education,
-            'cert' => $request->nacertme,
+            'cert' => $request->cert,
         ]);
 
         return $this->makeResponse("Profile successfully updated", "/profile/", 200);
