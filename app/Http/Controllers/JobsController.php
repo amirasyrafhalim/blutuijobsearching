@@ -121,23 +121,18 @@ class JobsController extends Controller
     public function update(Job $job, Request $request)
     {
         $this->authorize('update', $job);
-
-
-
         $request->validate([
             'title' => 'required|min:5|max:255',
             'description' => 'required|min:5',
             'price' => 'required|numeric|min:1|max:99999',
             'status' =>'required|in:' . implode(',', Job::STATUSES),
         ]);
-
         $job->update([
             'title' => $request->title,
             'description' => $request->description,
             'price' => $request->price * 100,
             'status' => $request->status,
         ]);
-
         return $this->makeResponse("Job $job->title successfully updated", "/jobs/" . $job->slug(), 200);
     }
 
