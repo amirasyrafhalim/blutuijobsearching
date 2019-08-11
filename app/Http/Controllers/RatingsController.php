@@ -6,7 +6,7 @@ use App\Job;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class RateController extends Controller
+class RatingsController extends Controller
 {
     public function index(Request $request){
         $this->authorize('viewAny', Job::class);
@@ -22,14 +22,9 @@ class RateController extends Controller
 
     public function store(Request $request){
         $this->authorize('show', Job::class);
-        $request->validate([
-            'job_id' => 'required',
-            'seller_id' => 'required',
-            'buyer_id' => 'required',
-            'seller_rate' => 'required|numeric',
-            'buyer_rate' => 'required|numeric',
-        ]);
-        $job = auth()->user()->jobs()->show([
+
+        $job = auth()->user()->jobs()->create([
+            'user_id' => $request->user_id,
             'job_id' => $request->job_id,
             'seller_id' => $request->seller_id,
             'buyer_id' => $request->buyer_id,
