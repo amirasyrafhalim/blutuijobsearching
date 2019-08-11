@@ -25,6 +25,6 @@ class Controller extends BaseController
             return response($data, $statusCode);
         }
 
-        return redirect($redirectUrl)->with('message', $message);
+        return redirect($redirectUrl)->with('message', $data);
     }
 }

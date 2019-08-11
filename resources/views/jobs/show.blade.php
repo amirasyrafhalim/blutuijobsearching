@@ -25,10 +25,7 @@
                         Please <a href="/login">sign in</a> to apply for job.
                     @else
                         @if(!Auth::user()->hasAppliedJob($job))
-                            <form action="/{{ $job->slugWithPrefix() }}/apply" method="POST">
-                                @csrf
-                                <button type="submit" class="btn btn-outline-primary">Apply Job</button>
-                            </form>
+                            <a href="/{{ $job->slugWithPrefix() }}/apply" class="btn btn-primary">Apply Job</a>
                         @else
                             You have applied for this job.
                         @endif
