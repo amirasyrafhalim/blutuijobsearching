@@ -11,6 +11,7 @@ class Job extends Model
 {
     use SoftDeletes;
 
+    protected $appends = ['slug'];
     protected $fillable = ['title', 'description', 'price', 'status'];
 
     const CATEGORY_DEFAULT = 0;
@@ -35,13 +36,23 @@ class Job extends Model
     ];
 
     /**
-     * Get job slug
+     * Get job slug.
      *
      * @return string
      */
     public function slug()
     {
         return $this->id . '/' . Str::slug($this->title);
+    }
+
+    /**
+     * Append slug to object property.
+     *
+     * @return string
+     */
+    public function getSlugAttribute()
+    {
+        return self::slug();
     }
 
     /**
