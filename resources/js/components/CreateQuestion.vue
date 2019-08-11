@@ -10,7 +10,7 @@
                     <label for="title" class="col-md-4 col-form-label text-md-right">Title</label>
 
                     <div class="col-md-6">
-                        <input id="title" type="text" class="form-control" name="title" required autofocus>
+                        <input id="title" type="text" class="form-control" name="title" v-model="title" required autofocus>
                     </div>
                 </div>
 
@@ -18,7 +18,7 @@
                     <label for="description" class="col-md-4 col-form-label text-md-right">Description</label>
 
                     <div class="col-md-6">
-                        <textarea id="description" name="description" class="form-control"></textarea>
+                        <textarea id="description" name="description" class="form-control" v-model="description"></textarea>
                     </div>
                 </div>
 
@@ -36,9 +36,27 @@
 
 <script>
     export default {
+        props: ['job'],
+
+        data() {
+            return {
+                title: "",
+                description: "",
+            }
+        },
+
         methods: {
             submitForm: function() {
-                alert('submitting form');
+                axios.post(`/jobs/${this.job.slug}/questions`, {
+                    'title': this.title,
+                    'description': this.description
+                }).then(response => {
+                    Event.fire('question-was-added', response.data);
+                    this.title = '';
+                    this.description = '';
+                }).catch(error => {
+                    console.log(error.message)
+                });
             }
         }
     }

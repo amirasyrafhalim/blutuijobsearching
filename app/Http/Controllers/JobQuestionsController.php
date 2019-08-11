@@ -23,10 +23,11 @@ class JobQuestionsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store job question to database.
      *
      * @param Job $job
      * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Job $job, Request $request)
@@ -37,13 +38,13 @@ class JobQuestionsController extends Controller
             'jsonAttributes' => 'nullable|JSON'
         ]);
 
-        $job->questions()->create([
+        $question = $job->questions()->create([
             'title' => $request->title,
             'description' => $request->description,
             'attributes' => $request->jsonAttributes,
         ]);
 
-        $this->makeResponse('Question stored successfully', '/' . $job->slugWithPrefix() . '/questions', 201);
+        return $this->makeResponse($question, '/' . $job->slugWithPrefix() . '/questions', 201);
     }
 
     /**
