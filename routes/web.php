@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 //Routes related to Job Questions
-Route::get('jobs/{job}/{slug}/questions', 'JobQuestionsController@show');
+Route::get('jobs/{job}/{slug}/questions', 'JobQuestionsController@index');
 Route::post('jobs/{job}/{slug}/questions', 'JobQuestionsController@store');
 
 // Routes related to Jobs
