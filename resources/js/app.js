@@ -21,6 +21,7 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('questions-list', require('./components/QuestionList.vue').default);
+Vue.component('create-question-card', require('./components/CreateQuestion.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
