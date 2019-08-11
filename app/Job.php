@@ -75,6 +75,16 @@ class Job extends Model
     }
 
     /**
+     * Job has many question for applicants to be answered.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function questions()
+    {
+        return $this->hasMany(JobQuestion::class, 'job_questions');
+    }
+
+    /**
      * Return price in currency friendly format.
      *
      * @return float|int
@@ -143,6 +153,16 @@ class Job extends Model
     public static function scopePublished($query)
     {
         return $query->where('status', self::STATUS_PUBLISHED)->get();
+    }
+
+    /**
+     * Returns true if job is published.
+     *
+     * @return bool
+     */
+    public function isPublished()
+    {
+        return $this->status == Job::STATUS_PUBLISHED;
     }
 }
 

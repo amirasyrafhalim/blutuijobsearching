@@ -11,7 +11,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class JobApplicationTest extends TestCase
 {
     use DatabaseMigrations, RefreshDatabase;
-
     /** @test */
     public function authenticated_user_can_submit_for_job_application()
     {

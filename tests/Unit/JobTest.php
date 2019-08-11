@@ -88,4 +88,12 @@ class JobTest extends TestCase
 
         $this->assertEquals(2, $publishedJobs->count());
     }
+
+    /** @test */
+    public function job_is_published()
+    {
+        $job = factory('App\Job')->create(['status' => Job::STATUS_PUBLISHED]);
+
+        $this->assertTrue($job->isPublished());
+    }
 }
