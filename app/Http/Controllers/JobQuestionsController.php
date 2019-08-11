@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Job;
+use App\JobQuestion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class JobQuestionsController extends Controller
 {
@@ -29,12 +32,32 @@ class JobQuestionsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Job $job
+     * @param \Illuminate\Http\Request $request
+     * @return void
      */
-    public function store(Request $request)
+    public function store(Job $job, Request $request)
     {
-        dd($request->all());
+        foreach ($request->all() as $question) {
+            $validator = Validator::make($question, [
+                'title' => 'required|max:255',
+                'description' => 'nullable',
+                'attributes' => 'JSON'
+            ]);
+
+            // For now
+            if ($validator->fails()) {
+                abort(400, 'Validation error for question ' . $question->title);
+            }
+
+            $job->questions()->create([
+                'title' => $question['title'],
+                'description' => $question['description'],
+                'attributes' => $question['attributes']
+            ]);
+        }
+
+        return redirect('/' . $job->slugWithPrefix() . '/questions')->with('message', 'Updated question successfully');
     }
 
     /**

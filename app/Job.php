@@ -81,7 +81,7 @@ class Job extends Model
      */
     public function questions()
     {
-        return $this->hasMany(JobQuestion::class, 'job_questions');
+        return $this->hasMany(JobQuestion::class, 'job_id');
     }
 
     /**
