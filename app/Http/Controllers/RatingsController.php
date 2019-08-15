@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Job;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class RatingsController extends Controller
@@ -69,7 +70,7 @@ class RatingsController extends Controller
             'seller_rate' => $request->seller_rate,
             'buyer_rate' => $request->buyer_rate,
         ]);
-        return $this->makeResponse("Ratings has been successfully updated", "/jobs/" . $job->slug(), 200);
+        return $this->makeResponse("Ratings has been successfully updated", "/home/", 200);
     }
     public function destroy(Job $job)
     {
@@ -78,5 +79,12 @@ class RatingsController extends Controller
         $job->delete();
 
         return $this->makeResponse("Ratings has been successfully deleted", "/jobs/", 200);
+    }
+
+    public function rate()
+    {
+        $user = Auth::user();
+        //$job =
+        return view('rating.rate', compact('user'));
     }
 }
