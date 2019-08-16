@@ -21,6 +21,22 @@ class RatingsController extends Controller
 
     }
 
+    /**
+     * Show create rate page.
+     *
+     * @param Job $job
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function create(Job $job)
+    {
+        $this->authorize('create', $job);
+
+        $user = Auth::user();
+
+        return view('rating.create', compact('user', 'job'));
+    }
+
     public function store(Request $request){
         $this->authorize('show', Job::class);
 
@@ -35,16 +51,15 @@ class RatingsController extends Controller
         return $this->makeResponse("Thank you for your ratings!", "/jobs/", 200);
     }
 
-    public function show(Job $job, $slug)
+    public function show()
     {
-        $this->authorize('create', $job);
+        $seller = Auth::user();
+        //$buyer = Auth::user();
 
-        if($slug != Str::slug($job->title))
-        {
-            abort(404);
-        }
+        return $seller;
+        //return $buyer;
 
-        return view('jobs.show', compact('job'));
+        //return view('rating.show', compact('seller', 'buyer'));
     }
     public function edit(Job $job)
     {
@@ -79,12 +94,5 @@ class RatingsController extends Controller
         $job->delete();
 
         return $this->makeResponse("Ratings has been successfully deleted", "/jobs/", 200);
-    }
-
-    public function rate()
-    {
-        $user = Auth::user();
-        //$job =
-        return view('rating.rate', compact('user'));
     }
 }

@@ -35,7 +35,8 @@ Route::get('jobs/{job}/ratings', 'RatingsController@edit');
 Route::get('jobs/{job}/ratings', 'RatingsController@index'); //done
 Route::delete('jobs/{job}/ratings', 'RatingsController@destroy');
 
-Route::get('rating/rate', 'RatingsController@rate');
+Route::get('rating/show', 'RatingsController@show');
+Route::get('rating/{job}/create', 'RatingsController@create');
 
 Auth::routes();
 
