@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Job;
+use App\JobAnswer;
+use App\JobQuestion;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 class JobApplicationController extends Controller
 {
@@ -37,6 +39,21 @@ class JobApplicationController extends Controller
      */
     public function store(Job $job, Request $request)
     {
+        $data = $request->except('_token');
+
+        foreach($data as $key => $value) {
+            $question = JobQuestion::findOrFail($key);
+            if($question->job_id != $job->id) {
+                abort(400);
+            }
+
+            $jobAnswer = new JobAnswer();
+            $jobAnswer->user_id = Auth::user()->id;
+            $jobAnswer->question_id = $question->id;
+            $jobAnswer->answers = json_encode($value);
+            $jobAnswer->save();
+        }
+
         $user = Auth::user();
 
         if($job->status != Job::STATUS_PUBLISHED) {

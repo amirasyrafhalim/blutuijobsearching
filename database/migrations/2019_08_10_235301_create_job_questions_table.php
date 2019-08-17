@@ -15,11 +15,13 @@ class CreateJobQuestionsTable extends Migration
     {
         Schema::create('job_questions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('job_id');
+            $table->unsignedBigInteger('job_id')->index();
             $table->string('title');
             $table->text('description')->nullable();
             $table->json('attributes')->nullable();
             $table->timestamps();
+
+            $table->foreign('job_id')->references('id')->on('jobs')->onDelete('cascade');
         });
     }
 

@@ -35,13 +35,13 @@ class JobQuestionsController extends Controller
         $this->validate($request, [
             'title' => 'required|max:255',
             'description' => 'nullable',
-            'jsonAttributes' => 'nullable|JSON'
+            'attributes' => 'nullable|JSON'
         ]);
 
         $question = $job->questions()->create([
             'title' => $request->title,
             'description' => $request->description,
-            'attributes' => $request->jsonAttributes,
+            'attributes' => $request['attributes'],
         ]);
 
         return $this->makeResponse($question, '/' . $job->slugWithPrefix() . '/questions', 201);

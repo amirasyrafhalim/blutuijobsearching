@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -27,24 +26,14 @@ class JobQuestionsTest extends TestCase
         $user = factory('App\User')->create();
         $job = factory('App\Job')->create(['user_id' => $user->id]);
 
-        $question_1 = [
+        $question = [
             'title' => 'How long do you take to finish this job?',
             'description' => 'Can you finish this job in 3 days?',
             'attributes' => "{\"required\": \"true\", \"type\": \"textarea\"}"
         ];
-
-        $question_2 = [
-            'title' => 'Can you apply Machine Learning in this project?',
-            'description' => 'TensorFlow and etc',
-            'attributes' => "{\"required\": \"true\", \"type\": \"textarea\"}"
-        ];
-
-        $setOfQuestions = [$question_1, $question_2];
-
         $this->withoutExceptionHandling()
-             ->json("POST", '/' . $job->slugWithPrefix() . '/questions', $setOfQuestions);
+             ->json("POST", '/' . $job->slugWithPrefix() . '/questions', $question);
 
-        $this->assertDatabaseHas('job_questions', $question_1);
-        $this->assertDatabaseHas('job_questions', $question_2);
+        $this->assertDatabaseHas('job_questions', $question);
     }
 }
