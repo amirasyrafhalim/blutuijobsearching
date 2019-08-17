@@ -29,6 +29,7 @@ Route::patch('jobs/{job}', 'JobsController@update');
 Route::delete('jobs/{job}', 'JobsController@destroy');
 
 // Routes related to Job Application
+Route::get('jobs/{job}/{slug}/applications', 'JobApplicationController@index');
 Route::get('jobs/{job}/{slug}/apply', 'JobApplicationController@show');
 Route::post('jobs/{job}/{slug}/apply', 'JobApplicationController@store');
 

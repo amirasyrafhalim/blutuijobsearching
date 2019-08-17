@@ -19,12 +19,29 @@ class JobApplicationController extends Controller
         $this->middleware('auth');
     }
 
+    public function index(Job $job, $slug)
+    {
+        if($slug != Str::slug($job->title)) {
+            abort(404);
+        }
+
+        $job->load('applicants');
+
+        return view('jobs.application.index', compact('job'));
+    }
+
+    /**
+     * Show job application form.
+     *
+     * @param Job $job
+     * @param $slug
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function show(Job $job, $slug)
     {
         $job->load('questions');
 
-        if($slug != Str::slug($job->title))
-        {
+        if($slug != Str::slug($job->title)) {
             abort(404);
         }
 
@@ -39,6 +56,10 @@ class JobApplicationController extends Controller
      */
     public function store(Job $job, Request $request)
     {
+        if($job->status != Job::STATUS_PUBLISHED) {
+            abort(400);
+        }
+
         $data = $request->except('_token');
 
         foreach($data as $key => $value) {
@@ -55,11 +76,6 @@ class JobApplicationController extends Controller
         }
 
         $user = Auth::user();
-
-        if($job->status != Job::STATUS_PUBLISHED) {
-            abort(400);
-        }
-
         $user->appliedJobs()->sync($job->id);
 
         return $this->makeResponse('Job successfully applied', $job->slugWithPrefix(), 200);
