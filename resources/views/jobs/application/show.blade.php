@@ -12,7 +12,7 @@
                     <p>{{ json_decode($question->answer->answers) }}</p>
                 @endforeach
             </div>
-            @if($job->hired_user_id != null)
+            @if($job->hired_user_id == null)
                 <div class="card-footer">
                     <form action="/jobs/{{ $job->id }}/applicant/{{ $applicant->id }}" method="POST">
                         @csrf

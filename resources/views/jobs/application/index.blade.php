@@ -21,6 +21,8 @@
                     <td><a href="/jobs/{{ $job->id }}/applicant/{{ $applicant->id }}">View</a></td>
                     @if($job->hired_user_id == $applicant->id)
                         <td><span class="badge badge-success">Hired</span></td>
+                    @else
+                        <td></td>
                     @endif
                 </tr>
             @endforeach

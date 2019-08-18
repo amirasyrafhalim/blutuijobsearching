@@ -21,6 +21,8 @@
                     <td><a href="/{{ $job->slugWithPrefix() }}">View</a></td>
                     @if($job->hired_user_id == Auth::user()->id)
                         <td><span class="badge badge-success">Hired</span></td>
+                    @else
+                        <td><span class="badge badge-warning">Pending</span></td>
                     @endif
                 </tr>
             @endforeach
