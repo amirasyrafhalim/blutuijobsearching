@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/jobs');
 });
 
 // Routes related to Hiring Applicant
@@ -36,6 +36,10 @@ Route::delete('jobs/{job}', 'JobsController@destroy');
 Route::get('jobs/{job}/{slug}/applications', 'JobApplicationController@index');
 Route::get('jobs/{job}/{slug}/apply', 'JobApplicationController@create');
 Route::post('jobs/{job}/{slug}/apply', 'JobApplicationController@store');
+
+// Routes related to applied and advertised job
+Route::get('applied-jobs', 'AppliedJobsController@index');
+Route::get('advertised-jobs', 'AdvertisedJobsController@index');
 
 Auth::routes();
 

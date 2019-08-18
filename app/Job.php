@@ -166,7 +166,7 @@ class Job extends Model
      */
     public static function scopePublished($query)
     {
-        return $query->where('status', self::STATUS_PUBLISHED)->get();
+        return $query->where('status', self::STATUS_PUBLISHED)->with('author')->get();
     }
 
     /**
