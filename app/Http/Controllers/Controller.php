@@ -14,17 +14,17 @@ class Controller extends BaseController
     /**
      * Return response based on request type necessarily.
      *
-     * @param $message
+     * @param $data
      * @param $redirectUrl
      * @param $statusCode
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      */
-    public function makeResponse($message, $redirectUrl, $statusCode)
+    public function makeResponse($data, $redirectUrl, $statusCode)
     {
         if(request()->ajax() || request()->expectsJson()) {
-            return response($message, $statusCode);
+            return response($data, $statusCode);
         }
 
-        return redirect($redirectUrl)->with('message', $message);
+        return redirect($redirectUrl)->with('message', $data);
     }
 }

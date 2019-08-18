@@ -11,6 +11,7 @@ class Job extends Model
 {
     use SoftDeletes;
 
+    protected $appends = ['slug'];
     protected $fillable = ['title', 'description', 'price', 'status'];
 
     const CATEGORY_DEFAULT = 0;
@@ -35,13 +36,33 @@ class Job extends Model
     ];
 
     /**
-     * Get job slug
+     * Get job slug.
      *
      * @return string
      */
     public function slug()
     {
         return $this->id . '/' . Str::slug($this->title);
+    }
+
+    /**
+     * Append slug to object property.
+     *
+     * @return string
+     */
+    public function getSlugAttribute()
+    {
+        return self::slug();
+    }
+
+    /**
+     * Get job slug with prefix.
+     * Todo: Unit Test.
+     * @return string
+     */
+    public function slugWithPrefix()
+    {
+        return 'jobs/' . $this->id . '/' . Str::slug($this->title);
     }
 
     /**
@@ -52,6 +73,26 @@ class Job extends Model
     public function author()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * A job has many applicants.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function applicants()
+    {
+        return $this->belongsToMany(User::class, 'job_user')->withTimestamps();
+    }
+
+    /**
+     * Job has many question for applicants to be answered.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function questions()
+    {
+        return $this->hasMany(JobQuestion::class, 'job_id');
     }
 
     /**
@@ -123,6 +164,16 @@ class Job extends Model
     public static function scopePublished($query)
     {
         return $query->where('status', self::STATUS_PUBLISHED)->get();
+    }
+
+    /**
+     * Returns true if job is published.
+     *
+     * @return bool
+     */
+    public function isPublished()
+    {
+        return $this->status == Job::STATUS_PUBLISHED;
     }
 }
 
