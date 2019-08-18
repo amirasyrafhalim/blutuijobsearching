@@ -20,6 +20,13 @@ class JobApplicationController extends Controller
         $this->middleware('auth');
     }
 
+    /**
+     * Show all applicants applied for the job.
+     *
+     * @param Job $job
+     * @param $slug
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index(Job $job, $slug)
     {
         if($slug != Str::slug($job->title)) {
@@ -81,24 +88,5 @@ class JobApplicationController extends Controller
         $user->appliedJobs()->sync($job->id);
 
         return $this->makeResponse('Job successfully applied', $job->slugWithPrefix(), 200);
-    }
-
-    /**
-     * Get the user application.
-     *
-     * @param Job $job
-     * @param User $applicant
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function show(Job $job, User $applicant)
-    {
-        $job->load('questions');
-
-        $job->questions->each(function($question) use ($applicant) {
-            // This can be simplified. (N+1 problem)
-            $question->answer = JobAnswer::where(['question_id' => $question->id, 'user_id' => $applicant->id])->first();
-        });
-
-        return view('jobs.application.show', compact('job', 'applicant'));
     }
 }

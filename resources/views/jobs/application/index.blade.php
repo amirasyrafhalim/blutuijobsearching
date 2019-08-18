@@ -10,6 +10,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
                 <th scope="col">Application</th>
+                <th scope="col">Hiring</th>
             </tr>
             </thead>
             <tbody>
@@ -18,6 +19,9 @@
                     <th scope="row">{{ $loop->iteration }}</th>
                     <td>{{ $applicant->name }}</td>
                     <td><a href="/jobs/{{ $job->id }}/applicant/{{ $applicant->id }}">View</a></td>
+                    @if($job->hired_user_id == $applicant->id)
+                        <td><span class="badge badge-success">Hired</span></td>
+                    @endif
                 </tr>
             @endforeach
             </tbody>

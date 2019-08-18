@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Routes related to Hiring Applicant
+Route::get('jobs/{job}/applicant/{applicant}', 'HiringApplicantController@show');
+Route::post('jobs/{job}/applicant/{applicant}', 'HiringApplicantController@store');
+
 //Routes related to Job Questions
 Route::get('jobs/{job}/{slug}/questions', 'JobQuestionsController@index');
 Route::post('jobs/{job}/{slug}/questions', 'JobQuestionsController@store');
@@ -32,7 +36,6 @@ Route::delete('jobs/{job}', 'JobsController@destroy');
 Route::get('jobs/{job}/{slug}/applications', 'JobApplicationController@index');
 Route::get('jobs/{job}/{slug}/apply', 'JobApplicationController@create');
 Route::post('jobs/{job}/{slug}/apply', 'JobApplicationController@store');
-Route::get('jobs/{job}/applicant/{applicant}', 'JobApplicationController@show');
 
 Auth::routes();
 

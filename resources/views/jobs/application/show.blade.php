@@ -12,6 +12,12 @@
                     <p>{{ json_decode($question->answer->answers) }}</p>
                 @endforeach
             </div>
+            <div class="card-footer">
+                <form action="/jobs/{{ $job->id }}/applicant/{{ $applicant->id }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-outline-primary float-right">Hire Applicant</button>
+                </form>
+            </div>
         </div>
 
     </div>
