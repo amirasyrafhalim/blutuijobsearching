@@ -56,6 +56,7 @@ class JobApplicationTest extends TestCase
 
         $this->assertDatabaseHas('job_answers',
             [
+                'job_id' => $job->id,
                 'user_id' => $applicant->id,
                 'question_id' => $questions->id,
                 'answers' => "\"Answer 1\"",

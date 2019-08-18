@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Job;
+use App\User;
 use App\JobAnswer;
 use App\JobQuestion;
 use Illuminate\Support\Str;
@@ -37,7 +38,7 @@ class JobApplicationController extends Controller
      * @param $slug
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show(Job $job, $slug)
+    public function create(Job $job, $slug)
     {
         $job->load('questions');
 
@@ -45,7 +46,7 @@ class JobApplicationController extends Controller
             abort(404);
         }
 
-        return view('jobs.application.show', compact('job'));
+        return view('jobs.application.create', compact('job'));
     }
 
     /**
@@ -69,6 +70,7 @@ class JobApplicationController extends Controller
             }
 
             $jobAnswer = new JobAnswer();
+            $jobAnswer->job_id = $job->id;
             $jobAnswer->user_id = Auth::user()->id;
             $jobAnswer->question_id = $question->id;
             $jobAnswer->answers = json_encode($value);
@@ -79,5 +81,24 @@ class JobApplicationController extends Controller
         $user->appliedJobs()->sync($job->id);
 
         return $this->makeResponse('Job successfully applied', $job->slugWithPrefix(), 200);
+    }
+
+    /**
+     * Get the user application.
+     *
+     * @param Job $job
+     * @param User $applicant
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function show(Job $job, User $applicant)
+    {
+        $job->load('questions');
+
+        $job->questions->each(function($question) use ($applicant) {
+            // This can be simplified. (N+1 problem)
+            $question->answer = JobAnswer::where(['question_id' => $question->id, 'user_id' => $applicant->id])->first();
+        });
+
+        return view('jobs.application.show', compact('job', 'applicant'));
     }
 }

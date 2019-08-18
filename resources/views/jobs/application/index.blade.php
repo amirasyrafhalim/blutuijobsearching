@@ -9,7 +9,6 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
-                <th scope="col">Profile</th>
                 <th scope="col">Application</th>
             </tr>
             </thead>
@@ -18,8 +17,7 @@
                 <tr>
                     <th scope="row">{{ $loop->iteration }}</th>
                     <td>{{ $applicant->name }}</td>
-                    <td><a href="/{{ $applicant->name }}">Profile</a></td>
-                    <td>View</td>
+                    <td><a href="/jobs/{{ $job->id }}/applicant/{{ $applicant->id }}">View</a></td>
                 </tr>
             @endforeach
             </tbody>

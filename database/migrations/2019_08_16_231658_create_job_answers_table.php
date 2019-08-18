@@ -15,7 +15,8 @@ class CreateJobAnswersTable extends Migration
     {
         Schema::create('job_answers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('user_id');
+            $table->unsignedBigInteger('job_id')->index();
+            $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('question_id')->index();
             $table->json('answers');
             $table->timestamps();
