@@ -9,7 +9,7 @@ class AdvertisedJobsController extends Controller
 {
     public function index()
     {
-        $jobs = Auth::user()->appliedJobs()->get();
+        $jobs = Auth::user()->jobs()->get();
 
         return view('advertised_job.index', compact('jobs'));
     }

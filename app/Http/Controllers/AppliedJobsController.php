@@ -9,8 +9,8 @@ class AppliedJobsController extends Controller
 {
     public function index()
     {
-        $jobs = Auth::user()->jobs()->get();
+        $jobs = Auth::user()->appliedJobs()->get();
 
-        return view('advertised_job.index', compact('jobs'));
+        return view('applied_job.index', compact('jobs'));
     }
 }
