@@ -14,10 +14,13 @@ class CreateRatingTable extends Migration
     public function up()
     {
         Schema::create('rating', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedInteger('job_id')->index();
-            $table->unsignedInteger('seller_id')->index();
-            $table->unsignedInteger('buyer_id')->index();
+            $table->bigIncrements('rate_id');
+            $table->unsignedBigInteger('job_id')->index();
+            $table->foreign('job_id')->references('id')->on('jobs')->onDelete('cascade');
+            $table->unsignedBigInteger('seller_id')->index();
+            $table->foreign('seller_id')->references('user_id')->on('jobs')->onDelete('cascade');
+            $table->unsignedBigInteger('buyer_id')->index();
+            $table->foreign('buyer_id')->references('user_id')->on('job_user')->onDelete('cascade');
             $table->integer('seller_rate')->nullable();
             $table->integer('buyer_rate')->nullable();
             $table->timestamps();

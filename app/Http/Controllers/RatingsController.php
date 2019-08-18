@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Job;
+use App\Rating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class RatingsController extends Controller
 {
-    public function index(Request $request){
+    /*public function index(Request $request){
         $this->authorize('viewAny', Job::class);
 
         if($request->title != null){
@@ -19,36 +20,44 @@ class RatingsController extends Controller
         }
         return view('jobs.index', compact('jobs'));
 
-    }
+    }*/
 
     /**
      * Show create rate page.
      *
-     * @param Job $job
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function create(Job $job)
+    public function create()
     {
-        $this->authorize('create', $job);
+        $this->authorize('create', Rating::class);
 
-        $user = Auth::user();
-
-        return view('rating.create', compact('user', 'job'));
+        return view('rating.create');
     }
 
+    /**
+     * Store rating to database.
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function store(Request $request){
-        $this->authorize('show', Job::class);
+        $this->authorize('create', Rating::class);
 
-        $job = auth()->user()->jobs()->create([
-            'user_id' => $request->user_id,
+        // Get the seller
+        // Get the buyer
+        // Attach ratings to rating table
+
+        $rate = auth()->user()->rating()->create([
+            'rate_id' => $request->rate_id,
             'job_id' => $request->job_id,
             'seller_id' => $request->seller_id,
             'buyer_id' => $request->buyer_id,
             'seller_rate' => $request->seller_rate,
             'buyer_rate' => $request->buyer_rate,
         ]);
-        return $this->makeResponse("Thank you for your ratings!", "/jobs/", 200);
+        return $this->makeResponse("Thank you for your ratings!", "/rating/create", 200);
     }
 
     public function show()

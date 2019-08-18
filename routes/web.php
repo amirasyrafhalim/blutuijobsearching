@@ -38,15 +38,16 @@ Route::get('jobs/{job}/{slug}/applications', 'JobApplicationController@index');
 Route::get('jobs/{job}/{slug}/apply', 'JobApplicationController@show');
 Route::post('jobs/{job}/{slug}/apply', 'JobApplicationController@store');
 
-Route::get('jobs/{job}/ratings', 'RatingsController@show');
+/*Route::get('jobs/{job}/ratings', 'RatingsController@show');
 Route::post('jobs/{job}/ratings', 'RatingsController@store');
 Route::patch('jobs/{job}/ratings', 'RatingsController@update');
 Route::get('jobs/{job}/ratings', 'RatingsController@edit');
 Route::get('jobs/{job}/ratings', 'RatingsController@index'); //done
-Route::delete('jobs/{job}/ratings', 'RatingsController@destroy');
+Route::delete('jobs/{job}/ratings', 'RatingsController@destroy');*/
 
-Route::get('rating/show', 'RatingsController@show');
-Route::get('rating/{job}/create', 'RatingsController@create');
+//Route::get('rating/show', 'RatingsController@show');
+Route::get('rating/create', 'RatingsController@create');
+Route::post('rating', 'RatingsController@store');
 
 Auth::routes();
 

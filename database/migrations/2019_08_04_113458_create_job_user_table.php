@@ -7,7 +7,7 @@ use Illuminate\Database\Migrations\Migration;
 class CreateJobUserTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations. The one who apply the job (Seller).
      *
      * @return void
      */

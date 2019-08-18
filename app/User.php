@@ -67,4 +67,14 @@ class User extends Authenticatable
     {
         return $this->appliedJobs()->where('job_id', $job->id)->exists();
     }
+
+    /**
+     * A user can have many ratings.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function rateUser()
+    {
+        return $this->hasMany(Rating::class, 'job_id');
+    }
 }
