@@ -2,27 +2,27 @@
 
 @section('content')
     <div class="container">
-        <h1>Job applicants for {{ $job->title }}</h1>
+        <h1>Your applied jobs.</h1>
 
         <table class="table table-hover">
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Application</th>
-                <th scope="col">Hiring</th>
+                <th scope="col">Job Title</th>
+                <th scope="col">View</th>
+                <th scope="col">Status</th>
             </tr>
             </thead>
             <tbody>
-            @foreach($job->applicants as $applicant)
+            @foreach($jobs as $job)
                 <tr>
                     <th scope="row">{{ $loop->iteration }}</th>
-                    <td>{{ $applicant->name }}</td>
-                    <td><a href="/jobs/{{ $job->id }}/applicant/{{ $applicant->id }}">View</a></td>
-                    @if($job->hired_user_id == $applicant->id)
+                    <td>{{ $job->title }}</td>
+                    <td><a href="/{{ $job->slugWithPrefix() }}">View</a></td>
+                    @if($job->hired_user_id == Auth::user()->id)
                         <td><span class="badge badge-success">Hired</span></td>
                     @else
-                        <td></td>
+                        <td><span class="badge badge-warning">Pending</span></td>
                     @endif
                 </tr>
             @endforeach

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Job;
 use App\Rating;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -28,11 +29,21 @@ class RatingsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function create()
+    public function create(Job $job, $slug)
     {
-        $this->authorize('create', Rating::class);
+        if($slug != Str::slug($job->title))
+        {
+            abort(404);
+        }
 
-        return view('rating.create');
+        $freelancer = User::findOrFail($job->hired_user_id);
+        $agency = User::findOrFail($job->user_id);
+
+        if($freelancer->id == Auth::user()->id || $agency->id == Auth::user()->id) {
+            return view('rating.create', compact('freelancer', 'agency', 'job'));
+        }
+
+        abort(403);
     }
 
     /**
@@ -42,21 +53,28 @@ class RatingsController extends Controller
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function store(Request $request){
-        $this->authorize('create', Rating::class);
-
+    public function store(Request $request, Job $job, $slug)
+    {
+        dd($request->rating);
         // Get the seller
         // Get the buyer
         // Attach ratings to rating table
 
-        $rate = auth()->user()->rating()->create([
-            'rate_id' => $request->rate_id,
-            'job_id' => $request->job_id,
-            'seller_id' => $request->seller_id,
-            'buyer_id' => $request->buyer_id,
-            'seller_rate' => $request->seller_rate,
-            'buyer_rate' => $request->buyer_rate,
-        ]);
+        $freelancer = User::findOrFail($job->hired_user_id);
+        $agency = User::findOrFail($job->user_id);
+
+        if (Auth::user()->id == $freelancer->id)
+        {
+            $job->freelancer_rating = $request->rating;
+            $job->save();
+        }
+
+        if (Auth::user()->id == $agency->id)
+        {
+            $job->agency_rating = $request->rating;
+            $job->save();
+        }
+
         return $this->makeResponse("Thank you for your ratings!", "/rating/create", 200);
     }
 

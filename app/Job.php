@@ -21,6 +21,9 @@ class Job extends Model
     const STATUS_COMPLETED = 2;
     const STATUS_CANCELLED = 3;
 
+    const STATUS_APPLICANT_NOT_HIRED = 0;
+    const STATUS_APPLICANT_HIRED = 1;
+
     const STATUS_TYPE = [
         self::STATUS_DRAFT => 'Draft',
         self::STATUS_PUBLISHED => 'Published',
@@ -163,7 +166,7 @@ class Job extends Model
      */
     public static function scopePublished($query)
     {
-        return $query->where('status', self::STATUS_PUBLISHED)->get();
+        return $query->where('status', self::STATUS_PUBLISHED)->with('author')->orderBy('created_at', 'DESC')->get();
     }
 
     /**

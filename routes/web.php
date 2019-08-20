@@ -12,8 +12,12 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/jobs');
 });
+
+// Routes related to Hiring Applicant
+Route::get('jobs/{job}/applicant/{applicant}', 'HiringApplicantController@show');
+Route::post('jobs/{job}/applicant/{applicant}', 'HiringApplicantController@store');
 
 Route::get('profile', 'ProfileController@show');
 Route::get('profile/edit', 'ProfileController@edit');
@@ -35,19 +39,21 @@ Route::delete('jobs/{job}', 'JobsController@destroy');
 
 // Routes related to Job Application
 Route::get('jobs/{job}/{slug}/applications', 'JobApplicationController@index');
-Route::get('jobs/{job}/{slug}/apply', 'JobApplicationController@show');
+Route::get('jobs/{job}/{slug}/apply', 'JobApplicationController@create');
 Route::post('jobs/{job}/{slug}/apply', 'JobApplicationController@store');
 
-/*Route::get('jobs/{job}/ratings', 'RatingsController@show');
-Route::post('jobs/{job}/ratings', 'RatingsController@store');
-Route::patch('jobs/{job}/ratings', 'RatingsController@update');
+// Routes related to applied and advertised job
+Route::get('applied-jobs', 'AppliedJobsController@index');
+Route::get('advertised-jobs', 'AdvertisedJobsController@index');
+
+
+Route::get('jobs/{job}/{slug}/ratings', 'RatingsController@create');
+Route::post('jobs/{job}/{slug}/ratings', 'RatingsController@store');
+/*Route::patch('jobs/{job}/ratings', 'RatingsController@update');
 Route::get('jobs/{job}/ratings', 'RatingsController@edit');
 Route::get('jobs/{job}/ratings', 'RatingsController@index'); //done
 Route::delete('jobs/{job}/ratings', 'RatingsController@destroy');*/
 
-//Route::get('rating/show', 'RatingsController@show');
-Route::post('rating/create', 'RatingsController@create');
-Route::post('rating', 'RatingsController@store');
 
 Auth::routes();
 

@@ -73,7 +73,7 @@ class JobsController extends Controller
             'status' => $request->status,
         ]);
 
-        return $this->makeResponse("Job $job->title successfully created", "/jobs/" . $job->slug(), 201);
+        return $this->makeResponse("Job $job->title successfully created", "/jobs/" . $job->slug() . "/questions", 201);
     }
 
     /**

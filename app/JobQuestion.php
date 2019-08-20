@@ -19,4 +19,14 @@ class JobQuestion extends Model
     {
         return $this->belongsTo(Job::class);
     }
+
+    /**
+     * A question has many answers.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function answers()
+    {
+        return $this->hasMany(JobAnswer::class);
+    }
 }
