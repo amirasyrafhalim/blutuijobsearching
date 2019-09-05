@@ -15,6 +15,9 @@ Route::get('/', function () {
     return redirect('/jobs');
 });
 
+// Routes related to users
+Route::get('users/{user}', 'UsersController@show');
+
 // Routes related to profile
 Route::get('profile', 'ProfileController@show');
 Route::get('profile/edit', 'ProfileController@edit');
