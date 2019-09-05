@@ -15,6 +15,11 @@ Route::get('/', function () {
     return redirect('/jobs');
 });
 
+// Routes related to profile
+Route::get('profile', 'ProfileController@show');
+Route::get('profile/edit', 'ProfileController@edit');
+Route::patch('profile', 'ProfileController@update');
+
 // Routes related to Hiring Applicant
 Route::get('jobs/{job}/applicant/{applicant}', 'HiringApplicantController@show');
 Route::post('jobs/{job}/applicant/{applicant}', 'HiringApplicantController@store');
