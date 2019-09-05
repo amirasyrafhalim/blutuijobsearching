@@ -122,8 +122,6 @@ class JobsController extends Controller
     {
         $this->authorize('update', $job);
 
-
-
         $request->validate([
             'title' => 'required|min:5|max:255',
             'description' => 'required|min:5',
