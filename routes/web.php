@@ -18,6 +18,12 @@ Route::get('/', function () {
 // Routes related to users
 Route::get('users/{user}', 'UsersController@show');
 
+// Routes related to messages
+Route::get('messages', 'MessagesController@index');
+Route::get('messages/{user}', 'MessagesController@show');
+Route::post('messages/{user}', 'MessagesController@store');
+Route::delete('messages/{user}/{message}', 'MessagesController@delete');
+
 // Routes related to profile
 Route::get('profile', 'ProfileController@show');
 Route::get('profile/edit', 'ProfileController@edit');
