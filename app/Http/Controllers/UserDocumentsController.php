@@ -18,13 +18,20 @@ class UserDocumentsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required'
+            'title' => 'required',
+            'document' => 'file|required'
         ]);
 
-        Auth::user()->documents()->create([
+        $document = $request->file('document');
+        $path = $document->store('public/user/' . Auth::user()->id . '/documents/');
+
+        $userDocument = Auth::user()->documents()->create([
             'title' => $request->title,
             'description' => $request->description,
         ]);
+
+        $userDocument->path_url = $path;
+        $userDocument->save();
 
         return redirect()->back();
     }

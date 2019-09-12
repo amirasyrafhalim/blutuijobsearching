@@ -8,7 +8,7 @@
                 <ul>
                     @foreach($documents as $document)
                         <li>
-                            {{$document->title}} - {{$document->description}}
+                            <a href="{{ Storage::url($document->path_url) }}">{{$document->title}} - {{$document->description}}</a>
                         </li>
                     @endforeach
                 </ul>
@@ -49,7 +49,7 @@
                                 <label for="document" class="col-md-4 col-form-label text-md-right">File</label>
 
                                 <div class="col-md-6">
-                                    <input id="document" type="file" name="document" >
+                                    <input id="document" type="file" name="document" required>
                                 </div>
                             </div>
 
