@@ -36,6 +36,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/jobs">Jobs</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/messages">Messages</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
