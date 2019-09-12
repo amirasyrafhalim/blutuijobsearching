@@ -55,6 +55,10 @@ Route::post('jobs/{job}/{slug}/apply', 'JobApplicationController@store');
 Route::get('applied-jobs', 'AppliedJobsController@index');
 Route::get('advertised-jobs', 'AdvertisedJobsController@index');
 
+//Routes related to user documents
+Route::get('profile/document', 'UserDocumentsController@create');
+Route::post('profile/document', 'UserDocumentsController@store');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

@@ -60,6 +60,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="/profile">Profile</a>
                                     <a class="dropdown-item" href="/applied-jobs">Applied Job</a>
                                     <a class="dropdown-item" href="/advertised-jobs">Advertised Job</a>
                                     <a class="dropdown-item" href="/jobs/create">New Job</a>
