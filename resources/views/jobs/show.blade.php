@@ -16,6 +16,14 @@
                 <div class="row">
                     <p>{{ $job->description }}</p>
                 </div>
+                <h2>All images</h2>
+                <div class="row">
+                    @foreach($job->images as $image)
+                        <div class="col-md-6">
+                            <img src="{{ Storage::url($image->path) }}" class="img-fluid" alt="">
+                        </div>
+                    @endforeach
+                </div>
             </div>
 
             <div class="col-md-4">

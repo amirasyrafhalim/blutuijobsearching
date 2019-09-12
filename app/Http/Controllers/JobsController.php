@@ -101,6 +101,8 @@ class JobsController extends Controller
     {
         $this->authorize('create', $job);
 
+        $job->load('images');
+
         if($slug != Str::slug($job->title))
         {
             abort(404);
