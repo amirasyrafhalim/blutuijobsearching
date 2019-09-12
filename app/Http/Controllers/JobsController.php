@@ -146,6 +146,7 @@ class JobsController extends Controller
             'title' => 'required|min:5|max:255',
             'description' => 'required|min:5',
             'price' => 'required|numeric|min:1|max:99999',
+            'expected_delivery_date' => 'date',
             'status' =>'required|in:' . implode(',', Job::STATUSES),
         ]);
 
@@ -153,6 +154,7 @@ class JobsController extends Controller
             'title' => $request->title,
             'description' => $request->description,
             'price' => $request->price * 100,
+            'expected_delivery_date' => $request->expected_delivery_date,
             'status' => $request->status,
         ]);
 
