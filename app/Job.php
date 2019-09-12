@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Job extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Imageable;
 
     protected $appends = ['slug'];
     protected $fillable = ['title', 'description', 'price', 'status'];
@@ -56,6 +57,15 @@ class Job extends Model
     public function getSlugAttribute()
     {
         return self::slug();
+    }
+
+    public function getDefaultImage()
+    {
+        if($this->images()->first() != null) {
+            return Storage::url($this->images()->first()->path);
+        } else {
+            return 'https://placehold.co/600x400';
+        }
     }
 
     /**

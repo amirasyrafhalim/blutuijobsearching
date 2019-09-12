@@ -11,7 +11,7 @@
                     @endif
                 </p>
                 <div class="row">
-                    <img src="https://placehold.co/600x400" alt="">
+                    <img class="img-fluid" src="{{ $job->getDefaultImage() }}" alt="">
                 </div>
                 <div class="row">
                     <p>{{ $job->description }}</p>

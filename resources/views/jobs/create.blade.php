@@ -8,7 +8,7 @@
                     <div class="card-header">Create a Job</div>
 
                     <div class="card-body">
-                        <form method="POST" action="/jobs">
+                        <form method="POST" action="/jobs" enctype="multipart/form-data">
                             @csrf
 
                             <div class="form-group row">
@@ -67,6 +67,20 @@
                                     <input id="price" type="number" class="form-control @error('price') is-invalid @enderror" name="price" required>
 
                                     @error('price')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="images" class="col-md-4 col-form-label text-md-right">Image</label>
+
+                                <div class="col-md-6">
+                                    <input id="images" type="file" class="@error('images') is-invalid @enderror" name="images[]" multiple>
+
+                                    @error('images')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
