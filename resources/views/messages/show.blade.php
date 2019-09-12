@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        <h1>Message with {{ $receiver->name }}</h1>
         <div class="row">
             <div class="col-md-12">
                 <div class="flex-column">

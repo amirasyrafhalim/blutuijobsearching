@@ -10,9 +10,28 @@ class MessagesController extends Controller
 {
     public function index()
     {
-        $messages = Message::where('sender_id', auth()->user()->id)->orWhere('recipient_id', auth()->user()->id)->get();
+        $shownUser = [];
 
-        return view('messages.index', compact('messages'));
+        $messages = Message::where(function ($query) {
+            $query->where([
+                'sender_id' => auth()->user()->id
+            ]);
+            $query->orWhere([
+                'recipient_id' => auth()->user()->id
+            ]);
+        })->get();
+
+        $messages->each(function($message) use (&$shownUser) {
+            if ($message->sender_id != auth()->user()->id) {
+                array_push($shownUser, $message->sender_id);
+            }
+            if ($message->recipient_id != auth()->user()->id) {
+                array_push($shownUser, $message->recipient_id);
+            }
+        });
+
+        $chattedUsers = User::find($shownUser);
+        return view('messages.index', compact('messages', 'chattedUsers'));
     }
 
     public function show(User $receiver)
