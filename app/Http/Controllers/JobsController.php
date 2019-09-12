@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Image;
 use App\Job;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
@@ -65,26 +66,30 @@ class JobsController extends Controller
             'title' => 'required|min:5|max:255',
             'description' => 'required|min:5',
             'price' => 'required|numeric|min:1|max:99999',
+            'expected_delivery_date' => 'date',
             'status' =>'required|in:' . implode(',', Job::STATUSES),
         ]);
 
         $job = auth()->user()->jobs()->create([
             'title' => $request->title,
             'description' => $request->description,
+            'expected_delivery_date' => Carbon::parse($request->expected_delivery_date)->format('Y-m-d H:i:s'),
             'price' => $request->price * 100,
             'status' => $request->status,
         ]);
 
         $images = $request->file('images');
 
-        foreach ($images as $image) {
-            $path = $image->store('public/job_images/' . $job->id);
-            $job->images()->create(['path' => $path]);
-        }
+        if($images != null) {
+            foreach ($images as $image) {
+                $path = $image->store('public/job_images/' . $job->id);
+                $job->images()->create(['path' => $path]);
+            }
 
-        $defaultImage = $job->images()->first();
-        $defaultImage->is_default = Image::DEFAULT_IMAGE;
-        $defaultImage->save();
+            $defaultImage = $job->images()->first();
+            $defaultImage->is_default = Image::DEFAULT_IMAGE;
+            $defaultImage->save();
+        }
 
         return $this->makeResponse("Job $job->title successfully created", "/jobs/" . $job->slug() . "/questions", 201);
     }

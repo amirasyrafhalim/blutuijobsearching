@@ -39,6 +39,19 @@
                             </div>
 
                             <div class="form-group row">
+                                <label for="expected_delivery_date" class="col-md-4 col-form-label text-md-right">Expected Delivery Date</label>
+
+                                <div class="col-md-6">
+                                    <input id="expected_delivery_date" type="date" class="form-control @error('expected_delivery_date') is-invalid @enderror" name="expected_delivery_date" value="{{ old('expected_delivery_date') }}" required autocomplete="expected_delivery_date" autofocus>
+                                    @error('expected_delivery_date')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label for="status" class="col-md-4 col-form-label text-md-right">Status</label>
 
                                 <div class="col-md-6">

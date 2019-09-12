@@ -13,7 +13,7 @@ class Job extends Model
     use SoftDeletes, Imageable;
 
     protected $appends = ['slug'];
-    protected $fillable = ['title', 'description', 'price', 'status'];
+    protected $fillable = ['title', 'description', 'price', 'status', 'expected_delivery_date'];
 
     const CATEGORY_DEFAULT = 0;
 
