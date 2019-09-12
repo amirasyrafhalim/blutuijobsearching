@@ -77,4 +77,9 @@ class User extends Authenticatable
     {
         return $this->appliedJobs()->where('job_id', $job->id)->exists();
     }
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
 }
