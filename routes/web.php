@@ -15,14 +15,23 @@ Route::get('/', function () {
     return redirect('/jobs');
 });
 
-// Routes related to Hiring Applicant
-Route::get('jobs/{job}/applicant/{applicant}', 'HiringApplicantController@show');
-Route::post('jobs/{job}/applicant/{applicant}', 'HiringApplicantController@store');
+// Routes related to users
+Route::get('users/{user}', 'UsersController@show');
 
+// Routes related to messages
+Route::get('messages', 'MessagesController@index');
+Route::get('messages/{receiver}', 'MessagesController@show');
+Route::post('messages/{receiver}', 'MessagesController@store');
+Route::delete('messages/{user}/{message}', 'MessagesController@delete');
+
+// Routes related to profile
 Route::get('profile', 'ProfileController@show');
 Route::get('profile/edit', 'ProfileController@edit');
 Route::patch('profile', 'ProfileController@update');
 
+// Routes related to Hiring Applicant
+Route::get('jobs/{job}/applicant/{applicant}', 'HiringApplicantController@show');
+Route::post('jobs/{job}/applicant/{applicant}', 'HiringApplicantController@store');
 
 //Routes related to Job Questions
 Route::get('jobs/{job}/{slug}/questions', 'JobQuestionsController@index');
@@ -46,15 +55,17 @@ Route::post('jobs/{job}/{slug}/apply', 'JobApplicationController@store');
 Route::get('applied-jobs', 'AppliedJobsController@index');
 Route::get('advertised-jobs', 'AdvertisedJobsController@index');
 
+//Routes related to user documents
+Route::get('profile/document', 'UserDocumentsController@create');
+Route::post('profile/document', 'UserDocumentsController@store');
 
+// Routes related to ratings
 Route::get('jobs/{job}/{slug}/ratings', 'RatingsController@create');
 Route::post('jobs/{job}/{slug}/ratings', 'RatingsController@store');
 /*Route::patch('jobs/{job}/ratings', 'RatingsController@update');
 Route::get('jobs/{job}/ratings', 'RatingsController@edit');
 Route::get('jobs/{job}/ratings', 'RatingsController@index'); //done
 Route::delete('jobs/{job}/ratings', 'RatingsController@destroy');*/
-
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

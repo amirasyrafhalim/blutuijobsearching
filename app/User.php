@@ -58,6 +58,16 @@ class User extends Authenticatable
     }
 
     /**
+     * A user has many messages.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    /**
      * Check if user has applied for the job.
      * Todo: Test
      * @param Job $job
@@ -66,5 +76,10 @@ class User extends Authenticatable
     public function hasAppliedJob(Job $job)
     {
         return $this->appliedJobs()->where('job_id', $job->id)->exists();
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
     }
 }

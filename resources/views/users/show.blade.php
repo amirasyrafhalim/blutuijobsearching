@@ -18,10 +18,6 @@
                 <div class="col text-right">
                     <a href="/profile/edit" class="btn btn-info" role="button">Edit Profile</a>
                 </div>
-                <br>
-                <div class="col text-right">
-                    <a href="/profile/document" class="btn btn-info" role="button">Document</a>
-                </div>
             </div>
         </div>
         <br>

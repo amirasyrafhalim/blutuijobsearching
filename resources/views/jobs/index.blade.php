@@ -24,7 +24,7 @@
                     @forelse($jobs as $job)
                         <div class="col-md-6 mb-3">
                             <div class="card" style="width: 18rem;">
-                                <img src="https://placehold.co/600x400" class="card-img-top" alt="...">
+                                <img src="{{ $job->getDefaultImage() }}" class="card-img-top img-fluid" alt="...">
                                 <div class="card-body">
                                     <h5 class="card-title"><a href="/jobs/{{ $job->slug() }}">{{ $job->title }}</a></h5>
                                     <h6 class="card-title">{{ $job->created_at->diffForHumans() }} by {{ $job->author->name }} - {{ $job->price ? '$' . $job->price : '' }}</h6>
