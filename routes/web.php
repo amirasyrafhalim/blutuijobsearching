@@ -60,8 +60,8 @@ Route::get('profile/document', 'UserDocumentsController@create');
 Route::post('profile/document', 'UserDocumentsController@store');
 
 // Routes related to ratings
-Route::get('jobs/{job}/{slug}/ratings', 'RatingsController@create');
-Route::post('jobs/{job}/{slug}/ratings', 'RatingsController@store');
+Route::get('jobs/{job}/{slug}/ratings', 'RatingsController@edit');
+Route::patch('jobs/{job}/{slug}/ratings', 'RatingsController@update');
 /*Route::patch('jobs/{job}/ratings', 'RatingsController@update');
 Route::get('jobs/{job}/ratings', 'RatingsController@edit');
 Route::get('jobs/{job}/ratings', 'RatingsController@index'); //done

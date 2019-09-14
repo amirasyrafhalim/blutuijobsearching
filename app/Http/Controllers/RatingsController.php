@@ -29,7 +29,7 @@ class RatingsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function create(Job $job, $slug)
+    public function edit(Job $job, $slug)
     {
         if($slug != Str::slug($job->title))
         {
@@ -40,7 +40,8 @@ class RatingsController extends Controller
         $agency = User::findOrFail($job->user_id);
 
         if($freelancer->id == Auth::user()->id || $agency->id == Auth::user()->id) {
-            return view('rating.create', compact('freelancer', 'agency', 'job'));
+
+            return view('rating.edit', compact('freelancer', 'agency', 'job'));
         }
 
         abort(403);
@@ -53,9 +54,9 @@ class RatingsController extends Controller
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function store(Request $request, Job $job, $slug)
+    public function update(Request $request, Job $job, $slug)
     {
-        dd($request->rating);
+        //dd($request->rating);
         // Get the seller
         // Get the buyer
         // Attach ratings to rating table
@@ -66,60 +67,18 @@ class RatingsController extends Controller
         if (Auth::user()->id == $freelancer->id)
         {
             $job->freelancer_rating = $request->rating;
+            $job->freelancer_comment = $request->comment;
             $job->save();
         }
 
         if (Auth::user()->id == $agency->id)
         {
             $job->agency_rating = $request->rating;
+            $job->agency_comment = $request->comment;
             $job->save();
         }
 
-        return $this->makeResponse("Thank you for your ratings!", "/rating/create", 200);
+        return $this->makeResponse("Thank you for your ratings!", $job->slugWithPrefix(), 200);
     }
 
-    public function show()
-    {
-        $seller = Auth::user();
-        //$buyer = Auth::user();
-
-        return $seller;
-        //return $buyer;
-
-        //return view('rating.show', compact('seller', 'buyer'));
-    }
-    public function edit(Job $job)
-    {
-        $this->authorize('update', $job);
-
-        return view('jobs.edit', compact('job'));
-    }
-
-    public function update(Job $job, Request $request)
-    {
-        $this->authorize('update', $job);
-        $request->validate([
-            'job_id' => 'required',
-            'seller_id' => 'required',
-            'buyer_id' => 'required',
-            'seller_rate' => 'required|numeric',
-            'buyer_rate' => 'required|numeric',
-        ]);
-        $job->update([
-            'job_id' => $request->job_id,
-            'seller_id' => $request->seller_id,
-            'buyer_id' => $request->buyer_id,
-            'seller_rate' => $request->seller_rate,
-            'buyer_rate' => $request->buyer_rate,
-        ]);
-        return $this->makeResponse("Ratings has been successfully updated", "/home/", 200);
-    }
-    public function destroy(Job $job)
-    {
-        $this->authorize('delete', $job);
-
-        $job->delete();
-
-        return $this->makeResponse("Ratings has been successfully deleted", "/jobs/", 200);
-    }
 }

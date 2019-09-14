@@ -24,6 +24,11 @@
                     @else
                         <td><span class="badge badge-warning">Pending</span></td>
                     @endif
+                    @if($job->status == \App\Job::STATUS_COMPLETED)
+                        <td><a href="/{{ $job->slugWithPrefix() }}/ratings">Rate</a></td>
+                    @else
+                        <td></td>
+                    @endif
                 </tr>
             @endforeach
             </tbody>
