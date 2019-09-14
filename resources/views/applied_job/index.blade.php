@@ -11,6 +11,7 @@
                 <th scope="col">Job Title</th>
                 <th scope="col">View</th>
                 <th scope="col">Status</th>
+                <th scope="col">Rate</th>
             </tr>
             </thead>
             <tbody>

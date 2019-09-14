@@ -16,7 +16,10 @@ class ProfileController extends Controller
 
         $user = Auth::user();
 
-        return view('profile.show', compact('user'));
+        $appliedJobs = Auth::user()->appliedJobs()->get();
+        $advertisedJobs = Auth::user()->jobs()->get();
+
+        return view('profile.show', compact('user', 'appliedJobs', 'advertisedJobs'));
     }
 
     /** Edit user profile */

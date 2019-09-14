@@ -49,5 +49,33 @@
                 @endif
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Ratings for the applied jobs</h4>
+                @forelse($appliedJobs as $job)
+                    @if($job->agency_rating != null && $job->status == \App\Job::STATUS_COMPLETED)
+                        <h6>{{ $job->title }} - {{ $job->agency_rating }}/5</h6>
+                        <p>Comment: {{ $job->agency_comment }}</p>
+                        <hr>
+                    @endif
+                @empty
+                    <p>No jobs</p>
+                @endforelse
+            </div>
+
+            <div class="col-md-6">
+                <h4>Ratings for the advertised jobs</h4>
+                @forelse($advertisedJobs as $job)
+                    @if($job->freelancer_rating != null && $job->status == \App\Job::STATUS_COMPLETED)
+                        <h6>{{ $job->title }} - {{ $job->freelancer_rating }}/5</h6>
+                        <p>Comment: {{ $job->freelancer_comment }}</p>
+                        <hr>
+                    @endif
+                @empty
+                    <p>No jobs</p>
+                @endforelse
+            </div>
+        </div>
     </div>
 @endsection
