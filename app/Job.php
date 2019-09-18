@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -9,9 +10,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Job extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Imageable;
 
-    protected $fillable = ['title', 'description', 'price', 'status'];
+    protected $appends = ['slug'];
+    protected $fillable = ['title', 'description', 'price', 'status', 'expected_delivery_date'];
 
     const CATEGORY_DEFAULT = 0;
 
@@ -19,6 +21,9 @@ class Job extends Model
     const STATUS_PUBLISHED = 1;
     const STATUS_COMPLETED = 2;
     const STATUS_CANCELLED = 3;
+
+    const STATUS_APPLICANT_NOT_HIRED = 0;
+    const STATUS_APPLICANT_HIRED = 1;
 
     const STATUS_TYPE = [
         self::STATUS_DRAFT => 'Draft',
@@ -35,13 +40,42 @@ class Job extends Model
     ];
 
     /**
-     * Get job slug
+     * Get job slug.
      *
      * @return string
      */
     public function slug()
     {
         return $this->id . '/' . Str::slug($this->title);
+    }
+
+    /**
+     * Append slug to object property.
+     *
+     * @return string
+     */
+    public function getSlugAttribute()
+    {
+        return self::slug();
+    }
+
+    public function getDefaultImage()
+    {
+        if($this->images()->first() != null) {
+            return Storage::url($this->images()->first()->path);
+        } else {
+            return 'https://placehold.co/600x400';
+        }
+    }
+
+    /**
+     * Get job slug with prefix.
+     * Todo: Unit Test.
+     * @return string
+     */
+    public function slugWithPrefix()
+    {
+        return 'jobs/' . $this->id . '/' . Str::slug($this->title);
     }
 
     /**
@@ -52,6 +86,26 @@ class Job extends Model
     public function author()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * A job has many applicants.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function applicants()
+    {
+        return $this->belongsToMany(User::class, 'job_user')->withTimestamps();
+    }
+
+    /**
+     * Job has many question for applicants to be answered.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function questions()
+    {
+        return $this->hasMany(JobQuestion::class, 'job_id');
     }
 
     /**
@@ -122,7 +176,17 @@ class Job extends Model
      */
     public static function scopePublished($query)
     {
-        return $query->where('status', self::STATUS_PUBLISHED)->get();
+        return $query->where('status', self::STATUS_PUBLISHED)->with('author')->orderBy('created_at', 'DESC')->get();
+    }
+
+    /**
+     * Returns true if job is published.
+     *
+     * @return bool
+     */
+    public function isPublished()
+    {
+        return $this->status == Job::STATUS_PUBLISHED;
     }
 }
 

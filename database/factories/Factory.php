@@ -3,6 +3,7 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 use App\Job;
 use App\User;
+use App\JobQuestion;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 
@@ -35,5 +36,15 @@ $factory->define(Job::class, function (Faker $faker) {
         'description' => $faker->paragraph,
         'status' => Job::STATUS_PUBLISHED,
         'price' => $faker->numberBetween(1, 1000)
+    ];
+});
+
+
+$factory->define(JobQuestion::class, function (Faker $faker) {
+    return [
+        'job_id' => function() { return factory(App\Job::class)->create()->id; },
+        'title' => Str::limit($faker->text, 255),
+        'description' => $faker->paragraph,
+        'attributes' => "{\"required\": \"true\", \"type\": \"textarea\"}",
     ];
 });

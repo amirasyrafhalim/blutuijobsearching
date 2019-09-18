@@ -16,7 +16,7 @@ class CreateJobsTable extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('user_id')->index();
+            $table->unsignedInteger('user_id')->index(); // The one who created the job.
             $table->unsignedInteger('category')->default(Job::CATEGORY_DEFAULT);
             $table->string('title');
             $table->text('description')->nullable();

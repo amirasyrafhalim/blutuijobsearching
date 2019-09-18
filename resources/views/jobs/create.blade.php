@@ -8,7 +8,7 @@
                     <div class="card-header">Create a Job</div>
 
                     <div class="card-body">
-                        <form method="POST" action="/jobs">
+                        <form method="POST" action="/jobs" enctype="multipart/form-data">
                             @csrf
 
                             <div class="form-group row">
@@ -31,6 +31,19 @@
                                 <div class="col-md-6">
                                     <textarea name="description" id="description" class="form-control">{{ old('description') }}</textarea>
                                     @error('description')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="expected_delivery_date" class="col-md-4 col-form-label text-md-right">Expected Delivery Date</label>
+
+                                <div class="col-md-6">
+                                    <input id="expected_delivery_date" type="date" class="form-control @error('expected_delivery_date') is-invalid @enderror" name="expected_delivery_date" value="{{ old('expected_delivery_date') }}" required autocomplete="expected_delivery_date" autofocus>
+                                    @error('expected_delivery_date')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -67,6 +80,20 @@
                                     <input id="price" type="number" class="form-control @error('price') is-invalid @enderror" name="price" required>
 
                                     @error('price')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="images" class="col-md-4 col-form-label text-md-right">Image</label>
+
+                                <div class="col-md-6">
+                                    <input id="images" type="file" class="@error('images') is-invalid @enderror" name="images[]" multiple>
+
+                                    @error('images')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

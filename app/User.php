@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'phoneNum', 'country', 'description', 'language', 'skills', 'education', 'cert'
     ];
 
     /**
@@ -45,5 +45,41 @@ class User extends Authenticatable
     public function jobs()
     {
         return $this->hasMany(Job::class);
+    }
+
+    /**
+     * A user may apply for many jobs.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function appliedJobs()
+    {
+        return $this->belongsToMany(Job::class, 'job_user', 'user_id', 'job_id')->withTimestamps();
+    }
+
+    /**
+     * A user has many messages.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    /**
+     * Check if user has applied for the job.
+     * Todo: Test
+     * @param Job $job
+     * @return bool
+     */
+    public function hasAppliedJob(Job $job)
+    {
+        return $this->appliedJobs()->where('job_id', $job->id)->exists();
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
     }
 }
